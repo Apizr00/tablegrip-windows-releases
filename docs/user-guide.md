@@ -30,7 +30,6 @@
    it most likely means and what to try, and the steps after it are marked as skipped. *Copy report* puts the result on the
    clipboard for a bug report. Recently opened tables come first in the command palette (Ctrl+K, Ctrl+P).
 
-
 ### Passwords
 - *Store securely* encrypts the password for your Windows account. It is never written to `connections.json`.
 - *Ask every time* asks when you connect and keeps it in memory only.
@@ -129,6 +128,13 @@ right-click and choose **Close connection** to close just that one.
 
 The window's **X** closes the active connection (the next one becomes active); with none left you are back on the start
 screen, and one more press closes the application. If any open connection has unsaved changes you are asked first.
+
+### Switching database
+
+A connection is bound to one database, but you do not have to save a connection per database. **Database > Switch database...**
+(or **Ctrl+Shift+D**, or "Switch database" in the palette) lists the databases this login can see on the server; pick one and it
+opens with the same login, SSH tunnel and settings in place of the current one. If the current one has unsaved edits you are
+asked first, and if you keep them both stay open. The saved connection is not changed. SQLite has nothing to switch to (a file is one database).
 
 ## Working with tables
 - Click a table to preview it, double-click to keep the tab. Click a column header to sort (on the server).
@@ -402,6 +408,7 @@ the SQL editor and the grid (Ctrl+Enter, Ctrl+Z, copy and paste, ...) are fixed.
 | Ctrl+Shift+N | New window |
 | Ctrl+Tab, Ctrl+Shift+Tab | Next / previous tab |
 | F5 | Refresh |
+| Ctrl+Shift+D | Switch database |
 | Ctrl+F | Filter the sidebar (or search connections) |
 | Ctrl+, | Preferences |
 | Ctrl+Z / Ctrl+Y | Undo / redo staged edits |

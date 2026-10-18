@@ -3,6 +3,18 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [1.9.3] - 2026-10-18
+
+### Added
+- **Switch database.** Database > Switch database... (Ctrl+Shift+D, or the palette) lists the databases of the server that the
+  login can open (MySQL, MariaDB, PostgreSQL, SQL Server) and opens the one you choose with the same login, tunnel and settings,
+  without saving another connection. The old connection closes once the new one is open; if it has unsaved edits and you keep
+  them, both stay open.
+
+### Fixed
+- **Builds with SQL Server support no longer fail the security audit.** The SQL Server driver pulled in a version of
+  `System.Security.Cryptography.Pkcs` with known vulnerabilities; the patched build is now used.
+
 ## [1.9.2] - 2026-10-14
 
 ### Improved

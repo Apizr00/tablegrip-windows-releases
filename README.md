@@ -18,7 +18,7 @@ written.
 
 Supports **SQLite**, **MySQL**, **MariaDB**, **PostgreSQL**, **SQL Server**
 
-> **Status:** version 1.9.2. All planned features are in. The installers are not code-signed yet, so Windows
+> **Status:** version 1.9.3. All planned features are in. The installers are not code-signed yet, so Windows
 > SmartScreen may warn the first time you run one. SQL Server support is
 > implemented and unit-tested but has not been run against a live server yet.
 
