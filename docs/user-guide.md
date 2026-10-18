@@ -192,7 +192,10 @@ asked first, and if you keep them both stay open. The saved connection is not ch
   undone), *New row*, *Duplicate row*, *Copy* and *Copy as*, *Copy all values of this column*, *Quick filter* (equals,
   does not equal, contains, is NULL, is not NULL, or clear), *Follow relationship*, *Import CSV*, *Export rows* and
   *Delete row*. The menu acts on the cell under the pointer.
-- **Structure** shows columns, keys, indexes and the CREATE statement.
+- **Structure** shows columns, keys, indexes and the CREATE statement. **Edit structure** turns the columns, indexes, foreign keys
+  and checks into a grid (add, rename, retype, remove, move); nothing runs until **Review SQL** (Ctrl+S) shows the `ALTER`
+  statements and you run them, and **Discard changes** puts everything back. Row edits that are not saved must be committed or
+  discarded first. The table opens again on its new structure afterwards.
 - **Analyze columns** (Structure side) counts, for every column, the share of NULLs, the distinct values and the smallest
   and largest value. It only reads; a table of more than two million rows is analyzed on its first 200,000. The Structure
   side also shows how big the table and its indexes are (MySQL, MariaDB, PostgreSQL, SQL Server and SQLite with its dbstat
@@ -254,6 +257,10 @@ last session**.
 **History.** Every run is added to **History** in the sidebar; type in the search box to find one. Right-click >
 **Pin to top** keeps a query at the top of the list, and pinned queries survive *Clear history*. **Save query** keeps
 one under **Queries**.
+
+**Saved queries.** Right-click a saved query for *Move to folder...* (the list then groups the queries by folder) and *Make a
+snippet with a keyword...* (type the keyword in any query and press Tab to insert it). The filter box above the list remembers
+its text: the tables, queries and history lists each keep their own, and the tables filter comes back with the tabs next time.
 
 ## Changing the structure
 Right-click a table in the sidebar for **Design table...**, **Rename...**, **Drop table...** and **Generate SQL**; the
@@ -353,6 +360,10 @@ Both are in the workspace menu (the button beside the sidebar) and in the comman
 - **If the key exists.** Choose what happens to a row whose primary key is already in the table: *Stop and change nothing*
   (default), *Skip the existing row*, or *Update the existing row* (only the columns in the file change). Skip and update
   need the table's primary key columns to be mapped; update needs a primary key.
+- **Import from the table menu.** Right-click a table > **Import** > *From CSV...*, *From JSON...* or *From SQL dump...*: the file
+  is picked first, then the import window opens on it (a SQL dump starts the restore, after you confirm).
+- **Progress.** Export, import, backup and restore share one panel: a percent bar, rows (or statements) done of the total, the
+  speed, the time elapsed and the time left, and for several tables a second bar for the whole job.
 - **Import SQL dump.** *File > Import SQL dump (restore)...* runs a `.sql` or `.sql.gz` script on the connection as one
   transaction. Backups can be written compressed: tick *Compress the file* in the backup panel.
 - **Run in background.** While an export, import, backup or restore runs, *Run in background* closes its window. A chip in

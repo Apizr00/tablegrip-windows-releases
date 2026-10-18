@@ -3,6 +3,31 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [1.12.0] - 2026-10-19
+
+### Added
+- **Edit the structure in the table tab.** On the **Structure** side press **Edit structure**: the columns, indexes, foreign keys
+  and checks become a grid you can change (add, rename, retype, remove, move). Nothing runs while you edit: **Review SQL** (or
+  **Ctrl+S**) shows the exact `ALTER` statements, and **Discard changes** puts everything back. A tab with unapplied structure
+  edits asks before it is closed. After the SQL ran, the table opens again on the new structure. The same grids are used by the
+  designer window.
+- **Import like in TablePlus.** Right-click a table > **Import** > **From CSV...**, **From JSON...** or **From SQL dump...**: the
+  file is chosen first (with the right file filter), then the import window opens already on that file; a SQL dump (`.sql` or
+  `.sql.gz`) starts the restore straight away, after the usual confirmation.
+- **A better progress panel for export, import, backup and restore.** One panel shows what is being written, a percent bar,
+  *rows done of rows in all*, the speed (rows or statements per second), the time elapsed and the time left, and, when several
+  tables are written, a second bar for the whole job ("Table 3 of 12"). A restore now reports every statement it has run, a
+  backup counts the rows of each table first, an import shows the share of the file, and a single-table export counts the table
+  so its bar is real. The footer chip of a background job shows the same percentage and time left.
+- **The sidebar filter remembers its text.** The tables filter comes back with the tabs next time the connection opens, and the
+  tables, queries and history lists each keep their own filter while you switch between them.
+- **Saved queries in folders.** Right-click a saved query > **Move to folder...**: the Queries list then groups them under the
+  folder names (queries without a folder come first). **Make a snippet with a keyword...** turns a saved query into a snippet:
+  type the keyword in any query and press Tab to insert it.
+
+### Changed
+- The provider call that runs a list of statements in one transaction can report how many have run (used by restore).
+
 ## [1.11.2] - 2026-10-19
 
 ### Fixed
