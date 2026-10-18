@@ -3,6 +3,13 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [1.11.2] - 2026-10-19
+
+### Fixed
+- **The export window no longer grows with the number of tables.** With hundreds of tables it became taller than the screen and the
+  Export and Cancel buttons were out of reach. The window now has a fixed size that never exceeds the screen: the list of tables
+  scrolls inside it and the buttons stay at the bottom.
+
 ## [1.11.1] - 2026-10-19
 
 ### Added
