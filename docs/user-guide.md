@@ -141,6 +141,14 @@ asked first, and if you keep them both stay open. The saved connection is not ch
 - **Select several tables** with Ctrl+click or Shift+click, or all of them with **Ctrl+A**, then right-click for **Export**
   (CSV, JSON, SQL INSERT or Excel) or press Ctrl+Shift+E. The data goes to one file per table in a folder you choose, or to a
   single .sql file for all of them.
+- **The table menu.** Right-click a table or view in the sidebar: *Open in new tab*, *Open structure*, **Item overview** (rows,
+  size, columns, key, indexes, foreign keys, checks and comment in one window), *Show diagram*, *Find usages*, *Copy name*,
+  **Pin to top** (the table moves to a PINNED section at the top of the list and stays there for this connection),
+  **Export** and **Import** (below), **New** (table, view, schema, database), **Copy Script As** (SELECT, INSERT, UPDATE, DELETE,
+  CREATE or DROP straight onto the clipboard; *Generate SQL in a new tab* opens it in an editor instead), *Maintenance*,
+  *Design table*, *Rename*, **Clone** (a new table with the same columns, key, plain indexes, foreign keys and checks, with
+  or without the rows), **Truncate** (all rows removed; SQLite deletes them and restarts its AUTOINCREMENT counter) and *Delete*.
+  Clone, Truncate and Delete show the SQL first; on a production connection the destructive ones ask for the connection name.
 - **Search** every table: **Ctrl+F** puts the cursor in the search box of the open table (server side, all columns), or of a
   query result (the loaded rows, with a "12 of 250 rows" count). Ctrl+F in the sidebar filters the list of tables.
 - **Filter** with conditions (column, operator, value; **+** adds a line, **-** removes it) or the quick search; filters apply
@@ -328,8 +336,16 @@ Both are in the workspace menu (the button beside the sidebar) and in the comman
   slow; if it is fast, a slow query is slow inside the server. It changes nothing.
 
 ## Export and import
-- **Export** (Ctrl+Shift+E): CSV, JSON, SQL INSERTs or Excel. A table can be exported whole (current sort and filter) or
-  just the loaded rows, and you can untick columns you do not want in the file.
+- **Export** (Ctrl+Shift+E, or right-click a table > Export > *Export tables...*): one window with the tables on the left
+  (tick the ones you want; the ones selected in the sidebar start ticked, with a search box and All / None) and the format on
+  the right: **CSV**, **JSON**, **SQL** (INSERT statements) or **Excel**. CSV options: *Convert NULL to EMPTY* (otherwise the
+  word NULL is written), *Convert line break to space*, *Put field names in the first row*, the byte order mark, the
+  **delimiter**, **quote** (if needed, always, never), **line break** (`\r\n` or `\n`) and the **decimal** separator (dot or
+  comma). Pick a folder (and, for one table, a file name); several tables become one file each, or one .sql file. While it
+  runs the window shows the table and *rows done / rows in the table* with a bar and Cancel; afterwards a **Success** message
+  offers *Open containing folder* and *Don't show this again* (Preferences turns it back on). *Export this table with
+  column selection...* opens the window of a single table where you can leave columns out; from a table tab, **Export**
+  there can also write only the rows loaded in the grid.
 - **Import CSV or JSON** (Ctrl+Shift+I): the format is detected from the file. For CSV the delimiter is detected and you can
   choose the text encoding; for JSON the file is an array of objects or one object per line, and the property names are the
   columns. Columns are matched by name and can be remapped; beside each one the window says what the values look like. The

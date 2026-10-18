@@ -3,6 +3,20 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [1.11.1] - 2026-10-19
+
+### Added
+- **A fuller table menu.** Right-click a table: **Item overview** (rows, size, columns, key, indexes, foreign keys, checks), **Pin to
+  top** (a PINNED section at the top of the list, kept per connection), **Export** > Export tables... / with column selection,
+  **Import** (CSV or JSON file, SQL dump), **New** (table, view, schema, database), **Copy Script As** (the SQL straight onto the
+  clipboard), **Clone** (the table with or without its rows), **Truncate** and **Delete**. Clone and Truncate show their SQL first.
+- **A new export window.** Tick the tables to export (the selected ones start ticked), choose CSV, JSON, SQL or Excel and set the
+  CSV file up: NULL as empty or the word NULL, line breaks inside values as spaces, the header row, delimiter, quoting (if needed,
+  always, never), `\r\n` or `\n` line ends and a dot or comma for decimals. The single-table export has the same CSV options.
+- **Export progress and a Success message.** The window shows the table being written and rows done of rows in the table with a bar
+  and Cancel; when it finishes a Success message offers *Open containing folder* and *Don't show this again* (Preferences turns it
+  back on).
+
 ## [1.11.0] - 2026-10-19
 
 ### Added
