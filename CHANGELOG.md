@@ -3,6 +3,28 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [1.11.0] - 2026-10-19
+
+### Added
+- **Edit the result of a query.** When a query is a plain `SELECT` from one table (columns or `*`, with at most WHERE, ORDER BY and
+  LIMIT), its result can be edited like the table: an edit bar appears, Ctrl+S commits, and the query runs again to show what is
+  stored. Joins, grouping, DISTINCT, UNION, computed or renamed columns and CTEs stay read-only.
+- **Tables without a primary key can be edited.** Rows are found by a unique key of NOT NULL columns, or else by all their values; a
+  change that would touch more than one row is refused and nothing is saved. A note beside the edit bar says which is in use.
+- **No overwriting someone else's change.** When you commit, the values you are replacing must still be what you read (text, integers,
+  decimals, booleans, GUIDs), or the commit is refused and nothing is written. Preferences > "Refuse to save an edit over a value that
+  someone else changed" turns it off.
+- **Pickers in cells.** A column with a fixed set of values (MySQL or PostgreSQL enums, or a CHECK that lists them) opens a list; a
+  true / false column opens TRUE / FALSE / NULL (Space flips it); F4 or Alt+Down opens the picker of any cell: the rows of the
+  referenced table for a foreign key (searchable), or a calendar with a time for date, time and timestamp columns.
+- **More Copy as formats:** Markdown table, SQL UPDATE (by key) and a WHERE ... IN list.
+- **Edit in the Details panel.** The fields are live when the table is: leaving a box stages the value, NULL and Format JSON buttons,
+  Esc restores the stored value, Alt+Up / Alt+Down move to the previous / next row.
+- SQLite check constraints are now read from the table definition, so they show in the Structure tab as well.
+
+### Fixed
+- The Messages tab of a script was hard to read on dark backgrounds.
+
 ## [1.10.0] - 2026-10-18
 
 ### Added

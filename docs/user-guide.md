@@ -150,9 +150,30 @@ asked first, and if you keep them both stay open. The saved connection is not ch
   text searches *Contains*, *Not contains*, *Has prefix* and *Has suffix*, which treat `%` and `_` as ordinary characters.
 - **Edit** a cell by double-clicking or pressing F2. Changes are *staged* (coloured) until you commit. **Preview** shows
   the exact SQL; **Commit** writes it in one transaction, and nothing is saved if one statement fails.
-  Tables without a primary key are read-only.
+  **Which row is changed.** By the primary key. A table without one is found by a unique key of NOT NULL columns, or,
+  failing that, by all the values the row had (a note beside the edit bar says so); an edit that would then touch more than
+  one row is refused and nothing is saved. Views stay read-only. **Someone else changed it?** When you commit, the values
+  you overwrite must still be what you read (text, integers, decimals, booleans and GUIDs; not dates, times or floating-point numbers), or the
+  commit is refused and nothing is written; turn this off in Preferences.
 - **Copy** the selected cells with Ctrl+C (tab-separated, full values). Right-click > **Copy as** adds a header line
   (**Ctrl+Shift+C**), CSV, JSON, or SQL INSERT statements for the selected rows and columns.
+- **Edit the result of a query.** When a query is a plain `SELECT` of columns (or `*`) from one table, with at most a `WHERE`,
+  `ORDER BY` and `LIMIT`, its result is editable like the table itself: an edit bar appears over the grid, **Ctrl+S**
+  commits (the SQL is shown first on a safe-mode connection) and the query runs again to show what is stored. A join,
+  `GROUP BY`, `DISTINCT`, `UNION`, a computed or renamed column, a CTE or a result that leaves out the key is not editable,
+  because an edit could then change the wrong row.
+- **Pickers.** A cell can be filled from a list instead of typed. A column with a fixed set of values (a MySQL `ENUM`, a
+  PostgreSQL enum type, or a `CHECK` that lists the allowed values) opens a list when you edit it; a true / false column
+  opens **TRUE / FALSE / NULL** (and **Space** flips it); **F4** (or Alt+Down, or right-click > *Pick a value*) opens the
+  picker of a cell: the **rows of the referenced table** for a foreign key of one column (search them, choose one, its key
+  goes into the cell), a **calendar and time** for date, time and timestamp columns, or the list. Double-click or F2 still
+  types.
+- **Copy as** also offers **Markdown table**, **SQL UPDATE (by key)** (one statement per selected row, setting the selected
+  columns and finding the row by its key) and **WHERE ... IN list** (the distinct values of the one selected column,
+  ready to paste into a query; NULLs become `OR col IS NULL`).
+- **Row details.** The Details panel is editable when the table is: leaving a box (Tab, a click, or Ctrl+Enter) stages
+  the value like a cell edit, a bar marks fields that changed, **NULL** sets a field to NULL, **Format** lays JSON out, Esc
+  puts the stored value back, and **Alt+Up / Alt+Down** move the grid to the previous / next row without leaving the panel.
 - **Follow relationships.** A foreign key cell that holds a value ends in an arrow (**→**): click it to open the table it
   points at, showing just that row (a column that is in several keys asks which). Right-click a cell > **Follow
   relationship** also lists *Rows that point at this row*: every table with a foreign key to this one, opened showing the
@@ -430,6 +451,8 @@ the SQL editor and the grid (Ctrl+Enter, Ctrl+Z, copy and paste, ...) are fixed.
 | Ctrl+S | Commit the staged edits of a table; in a query, save the SQL file |
 | Ctrl+Shift+S | Save the SQL file under another name |
 | Ctrl+Shift+R | Review the SQL of the staged edits without saving |
+| F4, Alt+Down | Open the picker of the cell (list, calendar, referenced rows) |
+| Alt+Up, Alt+Down (in Details) | Previous / next row |
 | Ctrl+Shift+O | Open a SQL file |
 | Ctrl+F | Filter the sidebar (or search connections) |
 | Ctrl+, | Preferences |
