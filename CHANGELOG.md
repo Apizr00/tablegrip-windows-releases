@@ -3,6 +3,24 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [1.10.0] - 2026-10-18
+
+### Added
+- **The tabs come back.** When a connection is opened again, its tabs are as you left them: each table with its sort, filter,
+  page and Data / Structure side, each query with its text and cursor. They are written down every few seconds and when you
+  close the connection or the window. Preferences > "Reopen the tabs of the last session" turns it off.
+- **SQL files.** File > Open SQL file... (Ctrl+Shift+O) reads a `.sql` file into a query tab; Ctrl+S saves it (asking for a name
+  the first time), Ctrl+Shift+S saves under another name, and File > Recent SQL files lists the last ten. A tab whose text
+  differs from its file shows a dot after its name, and closing it asks first.
+- **One result tab per statement.** Running several statements shows a tab for each one that returns rows (Result 1, Result 2, ...)
+  and a Messages tab with every statement's row count and time, or the error that stopped the script.
+- **Ctrl+S commits.** In a table, Ctrl+S saves the staged edits from anywhere in the window, even while a cell is being typed
+  in (on a safe-mode connection the SQL preview opens first). Ctrl+Shift+R shows the SQL of the staged edits without saving.
+  These and the SQL file keys can be changed in Tools > Keyboard shortcuts.
+
+### Changed
+- The editor bar's *Save* button, which kept the query under Queries in the sidebar, is now called *Favorite*; *Save* writes the file.
+
 ## [1.9.3] - 2026-10-18
 
 ### Added

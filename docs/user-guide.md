@@ -204,6 +204,24 @@ what you typed) and `$0` is where the caret finishes. A few starters ship with T
 `del`, `join`, `grp`, `dup`); **Snippets...** in the workspace menu adds your own, and *Save the selection as a snippet*
 (Ctrl+K) turns the SQL you selected into one. Yours are kept in `snippets.json`.
 
+**Several statements, several results.** Run all (Ctrl+Shift+Enter) or select a script and run it: each statement that returns
+rows gets its own tab (**Result 1**, **Result 2**, ...) under the editor, and a **Messages** tab lists every statement with
+its row count and time (or the error that stopped the script, which is then the tab you land on). Click a tab to look at that
+result; search, copy and export work on the tab you are looking at. A single statement shows no tabs, as before. Up to 25
+result tabs are kept per run; the rest still appear in Messages.
+
+**SQL files.** **File > Open SQL file...** (Ctrl+Shift+O, or *Open* on the editor bar) reads a `.sql` file into a query tab
+(a file bigger than 8 MB is refused: use *Import SQL dump* for those). **Ctrl+S** saves the text to that file; for a tab
+that has no file yet it asks for a name, and **Ctrl+Shift+S** saves under another name. The tab is named after the file and
+shows a dot (`orders.sql ●`) while its text differs from the file; closing it then asks first. **Recent SQL files** in the
+File menu lists the last ten. Files are written as UTF-8 without a byte order mark.
+
+**Tabs come back.** When a connection is opened again, its tabs are as you left them: each table with its sort, filter, page
+and Data / Structure side; each query with its text, cursor and file. Staged edits that were not committed are not kept.
+The tabs are written down every couple of seconds and when you close the connection or the window, in `sessions.json` next
+to the other app files (it holds your query text, never passwords). Turn it off in **Preferences > Reopen the tabs of the
+last session**.
+
 **History.** Every run is added to **History** in the sidebar; type in the search box to find one. Right-click >
 **Pin to top** keeps a query at the top of the list, and pinned queries survive *Clear history*. **Save query** keeps
 one under **Queries**.
@@ -409,6 +427,10 @@ the SQL editor and the grid (Ctrl+Enter, Ctrl+Z, copy and paste, ...) are fixed.
 | Ctrl+Tab, Ctrl+Shift+Tab | Next / previous tab |
 | F5 | Refresh |
 | Ctrl+Shift+D | Switch database |
+| Ctrl+S | Commit the staged edits of a table; in a query, save the SQL file |
+| Ctrl+Shift+S | Save the SQL file under another name |
+| Ctrl+Shift+R | Review the SQL of the staged edits without saving |
+| Ctrl+Shift+O | Open a SQL file |
 | Ctrl+F | Filter the sidebar (or search connections) |
 | Ctrl+, | Preferences |
 | Ctrl+Z / Ctrl+Y | Undo / redo staged edits |
