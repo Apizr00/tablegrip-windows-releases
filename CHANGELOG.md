@@ -3,6 +3,36 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [1.12.1] - 2026-10-22
+
+### Added
+- **SQL export like in TablePlus.** On the **SQL** tab of the export window every ticked table has three boxes, **Structure**
+  (its `CREATE`), **Drop** (a `DROP ... IF EXISTS` before it) and **Data** (its rows as multi-row `INSERT`s), and the boxes in the
+  header tick or clear a whole column. Tables are written in foreign-key order and views last, as a definition only (a view has no
+  Data box). Only the chosen tables are written, as one `.sql` file that **Import from SQL dump** can run again.
+- **Save As and a file name.** The export window now has a *File name* box and a **Customize** button (CSV delimiter, quote, line
+  break and decimal; SQL rows per `INSERT` and one-file-or-many), and **Export...** opens the *Save As* window for one file or asks
+  for a folder when each table goes into its own file.
+- **Gzip.** *Compress the file using Gzip* writes `.sql.gz`, `.csv.gz` or `.json.gz` (not Excel, which is a ZIP already).
+- **Export in Background.** The running export is a small card with the table's name, *rows done / rows in all the tables* and a
+  bar, and **Export in Background** hides it: the export carries on, shown in the notifications (the bell), and the console
+  records the result when it finishes.
+- **A pixel pill for waiting.** The bars of export, import, backup and restore are now the same pill of pixels as the connection
+  pill; while the size of the work is not known yet (reading structure, counting rows) a band of pixels sweeps across it.
+
+- **Notifications.** A bell in the title bar lists the background jobs: the name, the tables, the pixel pill with the percentage
+  and time left while it runs, then **Completed** with **Open Folder** (or what went wrong). The list opens by itself for a few
+  seconds when a job ends; **Clear** removes the finished ones. It replaces the chips that were in the footer.
+- **A short success window.** After an export the window says only *Export completed successfully*, with the logo and the
+  buttons *Open Containing Folder*, *Don't show this again* and *Close*. The rows, time and notes go to the console.
+
+### Fixed
+- The project did not build: `DetailsView` had a method defined twice.
+- The success window listed every table of a database with circular foreign keys (hundreds of names). The note now names five
+  and counts the rest.
+- *Cannot locate resource 'themes/colors.dark.xaml'*: the colours are now loaded by the name of the TableGrip assembly, so the
+  theme also applies when the program is started through another host (for example `dotnet TableGrip.dll`).
+
 ## [1.12.0] - 2026-10-19
 
 ### Added

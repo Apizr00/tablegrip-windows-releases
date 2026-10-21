@@ -348,8 +348,14 @@ Both are in the workspace menu (the button beside the sidebar) and in the comman
   the right: **CSV**, **JSON**, **SQL** (INSERT statements) or **Excel**. CSV options: *Convert NULL to EMPTY* (otherwise the
   word NULL is written), *Convert line break to space*, *Put field names in the first row*, the byte order mark, the
   **delimiter**, **quote** (if needed, always, never), **line break** (`\r\n` or `\n`) and the **decimal** separator (dot or
-  comma). Pick a folder (and, for one table, a file name); several tables become one file each, or one .sql file. While it
-  runs the window shows the table and *rows done / rows in the table* with a bar and Cancel; afterwards a **Success** message
+  comma; **Customize** shows these last four). **Export...** opens the *Save As* window for one file (the *File name* box
+  gives its name; several tables on the SQL tab are one `.sql` file named after the database) or asks for a folder when
+  every table goes into its own file. *Compress the file using Gzip* writes `.gz` files (not for Excel).
+  On the **SQL** tab each ticked table has **Structure** (`CREATE`), **Drop** (`DROP ... IF EXISTS` first) and **Data**
+  (`INSERT`s) boxes; the boxes in the header tick or clear a column for the ticked tables shown. Tables come in foreign-key
+  order and views last (their definition only). While it runs the window is a small card with the table, *rows done / rows in
+  all the tables* and a pill of pixels (a band of pixels sweeps while the work is still being measured), with Cancel and
+  **Export in Background**; afterwards a **Success** message
   offers *Open containing folder* and *Don't show this again* (Preferences turns it back on). *Export this table with
   column selection...* opens the window of a single table where you can leave columns out; from a table tab, **Export**
   there can also write only the rows loaded in the grid.
@@ -366,9 +372,10 @@ Both are in the workspace menu (the button beside the sidebar) and in the comman
   speed, the time elapsed and the time left, and for several tables a second bar for the whole job.
 - **Import SQL dump.** *File > Import SQL dump (restore)...* runs a `.sql` or `.sql.gz` script on the connection as one
   transaction. Backups can be written compressed: tick *Compress the file* in the backup panel.
-- **Run in background.** While an export, import, backup or restore runs, *Run in background* closes its window. A chip in
-  the footer shows the progress and has Stop; when the job ends the window flashes in the taskbar if another program is in
-  front, and the chip stays (with *Show in folder* for files) until you dismiss it with the x.
+- **Run in background.** While an export, import, backup or restore runs, *Run in background* (*Export in Background* for tables)
+  closes its window. The **bell** in the title bar lists it with a pill of pixels, the percentage and a Stop button; when the job
+  ends the list opens for a few seconds (and the window flashes in the taskbar if another program is in front). The entry stays,
+  with *Completed* and **Open Folder** for files, until you dismiss it with the x or press **Clear**.
 
 ## Columns, sorting and pasting
 - **Sort** by several columns: click a header for that column alone (ascending, descending, off); **Shift+click** adds a
