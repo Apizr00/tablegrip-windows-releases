@@ -3,6 +3,44 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.3.0] - 2026-10-24
+
+### Added
+- **MongoDB** (phase J5, second half). Pick MongoDB in the new-connection picker: host and port (27017), optional user and
+  password, TLS, and the database (empty is `test`). Instead of a host you can paste a full address
+  (`mongodb://user:pass@host:27017/app?authSource=admin`, or `mongodb+srv://...` for Atlas), which is used as it is.
+  - **A collection is a table, a document is a row.** The columns are the fields found in the first 200 documents (`_id`
+    first); a field that turns up later on a page is added. Each column has the type its values have (`string`, `int`, `long`,
+    `double`, `decimal`, `bool`, `datetime`, `objectid`, `uuid`, `object`, `array`, `binary`, or `mixed`). Objects and arrays
+    show as JSON, an ObjectId as its 24 hex digits, a date as a date. The Structure tab shows the indexes, how many documents
+    each field is in, the options of the collection and the shell commands that would create it again.
+  - **The server does the searching.** Paging, sorting, the filter bar (equals, contains, `IN`, `BETWEEN`, null, ...), quick
+    search (which finds numbers, dates and ids too) and the count are turned into a MongoDB query, so a big collection is not
+    read into the program. A condition the server cannot be asked (a search through objects, a function) is evaluated on the
+    documents, up to 100,000 of them, and a bigger collection is told to use a simpler condition.
+  - **Edit like a table.** Change a field (it keeps the type it has: `5` stays text in a text field and is a number in a number
+    field), set it to null, edit an object or array as JSON, add a row with **+ Row** (an empty `_id` gets a new ObjectId) and
+    delete rows. Changes are staged, the SQL is shown first, and the commit is one bulk write. Every update names the fields it
+    changes with the value they had, so a document changed by somebody else is reported and not overwritten; on a replica set
+    the commit is a transaction and is rolled back as a whole, on a single server the changes made before a conflict stay
+    and the message says so. **Truncate** deletes the documents and keeps the indexes.
+  - **A console for shell commands.** A query tab takes `db.users.find({age: {$gt: 30}}).sort({age: -1}).limit(5)`, `findOne`,
+    `countDocuments`, `distinct`, `aggregate`, `insertOne`/`insertMany`, `updateOne`/`updateMany`, `replaceOne`, `deleteOne`/
+    `deleteMany`, `createIndex`, `dropIndex`, `getIndexes`, `drop`, `db.runCommand({...})`, `show collections` and `show dbs`,
+    with the shell's looser JSON (`{name: 'Ada'}`, `ObjectId("...")`, `ISODate("...")`, `/regex/i`) and `//` comments. SQL
+    can be mixed in. Safe mode sorts commands by what they do: reads pass, `insertOne` or `$out` asks, `deleteMany`, `drop` and
+    `dropDatabase` are destructive, and a read-only connection refuses all of them.
+  - **Administration** shows the operations running now (with kill), the server status, the databases and, on a replica set,
+    its members.
+  - A user made in another database than `admin` is found by trying that database after `admin`. A refused sign-in says so
+    and how to name the database (`?authSource=`).
+  - The driver and its compression libraries add about 6 MB to the download (102 to 109 MB for the full package). Tables, schemas, ER diagrams, migrations, backups and the other SQL tools are
+    hidden or say that MongoDB has none.
+
+### Changed
+- `long` (a 64-bit integer) is a whole number to the grid, and an `object` is JSON: they are checked when typed, and the
+  conflict check of an edit covers them.
+
 ## [2.2.0] - 2026-10-24
 
 ### Added

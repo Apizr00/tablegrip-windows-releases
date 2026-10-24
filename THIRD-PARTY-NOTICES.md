@@ -10,6 +10,7 @@ reproduced here as those licences require. TableGrip itself is licensed under th
 | AvalonEdit | 6.3.1.120 | MIT | 2000-2025 AlphaSierraPapa for the SharpDevelop Team | http://www.avalonedit.net/ |
 | BouncyCastle.Cryptography | 2.7.0 | MIT | Copyright © Legion of the Bouncy Castle Inc. 2000-2026 | https://www.bouncycastle.org/stable/nuget/csharp/website |
 | CommunityToolkit.Mvvm | 8.4.2 | MIT | (c) .NET Foundation and Contributors. All rights reserved. | https://github.com/CommunityToolkit/dotnet |
+| DnsClient | 1.6.1 | Apache-2.0 | Copyright (c) 2021 Michael Conrad | http://dnsclient.michaco.net/ |
 | DuckDB.NET.Bindings.Full | 1.5.6 | MIT | Copyright © 2020 - 2026 Giorgi Dalakishvili | https://github.com/Giorgi/DuckDB.NET |
 | DuckDB.NET.Data.Full | 1.5.6 | MIT | Copyright © 2020 - 2026 Giorgi Dalakishvili | https://github.com/Giorgi/DuckDB.NET |
 | Microsoft.Bcl.Cryptography | 9.0.18 | MIT | © Microsoft Corporation. All rights reserved. | https://dot.net/ |
@@ -35,8 +36,12 @@ reproduced here as those licences require. TableGrip itself is licensed under th
 | Microsoft.IdentityModel.Protocols.OpenIdConnect | 8.16.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet |
 | Microsoft.IdentityModel.Tokens | 8.16.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet |
 | Microsoft.SqlServer.Server | 1.0.0 | MIT | © Microsoft Corporation. All rights reserved. | https://aka.ms/sqlclientproject |
+| MongoDB.Bson | 3.12.0 | Apache-2.0 | Copyright © 2010-present MongoDB Inc. | https://www.mongodb.com/docs/drivers/csharp/ |
+| MongoDB.Driver | 3.12.0 | Apache-2.0 | Copyright © 2010-present MongoDB Inc. | https://www.mongodb.com/docs/drivers/csharp/ |
 | MySqlConnector | 2.6.2 | MIT | Copyright 2016–2026 Bradley Grainger | https://mysqlconnector.net/ |
 | Npgsql | 10.0.3 | PostgreSQL | Copyright 2025 © The Npgsql Development Team | https://github.com/npgsql/npgsql |
+| SharpCompress | 0.48.1 | MIT | Copyright (c) 2025 Adam Hathcock | https://github.com/adamhathcock/sharpcompress |
+| Snappier | 1.3.1 | BSD-3-Clause | Copyright 2011-2020, Google, Inc. and Snappier Authors | https://brantburnett.github.io/Snappier/ |
 | SQLitePCLRaw.bundle_e_sqlite3 | 2.1.12 | Apache-2.0 | Copyright 2014-2024 SourceGear, LLC |  |
 | SQLitePCLRaw.core | 2.1.12 | Apache-2.0 | Copyright 2014-2024 SourceGear, LLC |  |
 | SQLitePCLRaw.lib.e_sqlite3 | 2.1.12 | Apache-2.0 | Copyright 2014-2024 SourceGear, LLC |  |
@@ -45,6 +50,7 @@ reproduced here as those licences require. TableGrip itself is licensed under th
 | System.IdentityModel.Tokens.Jwt | 8.16.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet |
 | System.Threading.RateLimiting | 9.0.18 | MIT | © Microsoft Corporation. All rights reserved. | https://dot.net/ |
 | Velopack | 1.2.158 | MIT | Copyright © Velopack Ltd. All rights reserved. | https://github.com/velopack/velopack |
+| ZstdSharp.Port | 0.7.3 | MIT | Copyright Oleg Stepanischev 2023 | https://github.com/oleg-st/ZstdSharp |
 
 The self-contained build also includes the **.NET runtime** and **Windows Presentation Foundation** (MIT License,
 (c) .NET Foundation and Contributors) and the native **SQLite** library (public domain), **SQL Server SNI** (Microsoft

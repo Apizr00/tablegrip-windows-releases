@@ -86,6 +86,49 @@ TLS if the server needs it, and the **database number** (`0` to `15` on a defaul
   maintenance are hidden or say so. CSV and JSON export and import of the keys work. Administration shows the clients (kill
   works), the server status (`INFO`) and the databases. Redis Cluster, Sentinel, pub/sub and modules are not covered.
 
+### MongoDB
+Pick **MongoDB** in the new-connection picker: host, port (27017), the user and password if the server asks for them, TLS, and
+the **database** (empty is `test`). For Atlas, a replica set or a server with options, paste a full address into *Host*
+(`mongodb://user:pass@host1,host2/app?replicaSet=rs0&authSource=admin`, or `mongodb+srv://...`); it is used as written, and
+the user and password boxes are only used if the address names none. A user is signed in against `admin` first and then against
+the database of the connection; if yours lives somewhere else, name it with `?authSource=` in the address.
+- **A collection is a table.** The sidebar lists the collections and views of the database (not the `system.*` ones); open one
+  with a double-click. The columns are the fields found in the first 200 documents, `_id` first, plus any field that shows up
+  on a page you open later. The type of a column is the type its values have (`string`, `int`, `long`, `double`, `decimal`,
+  `bool`, `datetime`, `objectid`, `uuid`, `object`, `array`, `binary`), or `mixed`. A field a document lacks shows as `NULL`,
+  the same as a field that is null. Objects and arrays show as JSON; dates are UTC. **Database > Switch database...** lists
+  the databases you may see.
+- **Search and sort.** Paging, sorting, the filter bar, quick search and the row count are asked of the server, so they are
+  fast on a big collection (an index helps, as always). Quick search and *contains* read each value as text, so `30` finds the
+  number 30 and `2024-03` finds a date. A condition on an `object` or `array` column, or one that uses a function, cannot be
+  sent to the server: it is checked on the documents, which is only done for collections of up to 100,000 documents.
+- **Edit.** Change a value, set it to NULL, edit an object or array as JSON, add a row with **+ Row** (leave `_id` empty for a
+  new ObjectId; an empty field is not stored) and delete rows. Text typed into a field becomes the type the field has now (`31`
+  into a number field is a number, `yes` into a boolean is `true`, `2024-03-01 10:30` into a date is a date, in UTC); for a field
+  that is not there, the type of the column. The `_id` of a document cannot be changed. Changes are staged and the SQL is shown
+  first. The commit is one bulk write: every update lists the fields it changes with the values they had, so a document
+  changed by somebody else is reported and left alone. On a **replica set** the commit is a transaction, so a conflict
+  saves nothing; on a **single server** (MongoDB has no transactions there) the changes made before the conflict stay,
+  and the message tells you so. Dates, doubles, objects and arrays are not compared with what you saw when the table was
+  loaded (rounding and formatting make that unreliable); only text, whole numbers, decimals, booleans and UUIDs are.
+  **Truncate** deletes every document and keeps the collection and its indexes.
+- **Commands.** A query tab takes shell commands as well as SQL: `db.users.find({age: {$gt: 30}}, {name: 1}).sort({age: -1}).limit(10)`,
+  `findOne`, `countDocuments`, `estimatedDocumentCount`, `distinct('field', {filter})`, `aggregate([...])`, `insertOne`,
+  `insertMany`, `updateOne` / `updateMany` (with `{upsert: true}`), `replaceOne`, `deleteOne` / `deleteMany`, `createIndex`,
+  `dropIndex`, `getIndexes`, `stats`, `drop`, `renameCollection`, `db.createCollection(...)`, `db.getCollectionNames()`,
+  `db.runCommand({...})`, `db.adminCommand({...})`, `show collections`, `show dbs`. Name a collection with a dash or space as
+  `db.getCollection("my-coll")`. Arguments are the shell's JSON: unquoted names, single quotes, `ObjectId("...")`,
+  `ISODate("...")`, `NumberLong(5)`, `/regex/i`; `//` starts a comment; several commands are separated by `;`. Results show as
+  a grid (at most 10,000 documents). `use db` is not needed: change the database with *Switch database*. Cursors, `forEach`
+  and other JavaScript are not available; `aggregate` and `runCommand` cover them.
+- **Safe mode** knows MongoDB: reads pass; `insertOne`, `updateMany`, `createIndex` and an `aggregate` that ends in `$out` or
+  `$merge` count as changes; `deleteOne`, `deleteMany`, `drop`, `dropDatabase` and `dropIndex` are destructive. A
+  *Read-only* connection refuses all of them, and every `db.runCommand` that is not on the list of reads.
+- **Not for MongoDB.** There is no schema, so design, clone, rename, scripts, ER diagram, migrations, schema compare, SQL dumps
+  and maintenance are hidden or say so. CSV and JSON export and import work on the rows as shown. Administration shows the
+  operations running now (kill works), the server status, the databases and the replica set members. Sharding tools, change
+  streams, GridFS, time-series options and client-side field encryption are not covered.
+
 ### CockroachDB and TimescaleDB
 Both are chosen in the same picker as the other engines and use the PostgreSQL driver, so tables, views, indexes, foreign keys,
 editing, import, export, the designer and TLS work as they do for PostgreSQL. A connection URL can start with `cockroachdb://`
