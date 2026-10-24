@@ -576,6 +576,12 @@ asked first, and if you keep them both stay open. The saved connection is not ch
   text mentions it (a whole-word name search, so it says "mentions"). Double-click a row to open the table, or to read the
   routine in a query tab. Do this before dropping or renaming something.
 
+### While data loads, and when there is none
+- **Loading.** The first time a table's rows or a database's tables are loading, grey bars in the shape of what is coming fill the area (they pulse softly, and stay still when Windows is set to reduce animations), instead of a blank panel.
+  The sidebar says "Could not list the tables" with the reason when the listing fails, rather than staying on the placeholders.
+- **A slow query** shows *Running... 12.4 s* in the result area, and a **Stop** button, until the first rows arrive.
+- **Nothing to show** looks the same everywhere: an icon, what is missing, and the next step as a button where there is one. An empty table says so; a filter that matches nothing offers **Clear filter**; a home page with no connections
+  offers **Create connection...**, and a search that matches none offers **Clear search**.
 ## SQL editor
 | Action | Keys |
 |---|---|

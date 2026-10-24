@@ -3,6 +3,15 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.18.0] - 2026-10-24
+
+### Added
+- **Loading placeholders**: while the first rows of a table or the first list of tables loads, grey bars in the shape of the grid (or the list) show instead of a blank area. They pulse softly and stay still when Windows is set to reduce animations.
+- **A running query shows its time** (*Running... 3.2 s*) with a **Stop** button until the first rows arrive.
+- **Empty states** share one look: an icon, a title, a sentence and the next step as a button. A filter that matches no rows offers **Clear filter**; the home page offers **Create connection...** or **Clear search**.
+
+### Changed
+- The sidebar no longer says "no tables yet" while the tables are still being listed, and says why when the listing fails.
 ## [2.17.0] - 2026-10-24
 
 ### Added
