@@ -3,6 +3,12 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.20.0] - 2026-10-24
+
+### Added
+- **Smarter search on the start screen**: every word has to match the name, address, group, tag or engine, and a prefix narrows a word to one place (`tag:production`, `engine:postgres`, `group:work`, `name:shop`, quotes for phrases).
+- **Recently opened**: the five connections opened last are listed again under their own header (when there are four or more connections).
+- **Last opened** time beside each connection ("12 min ago", "yesterday", "15 Oct").
 ## [2.19.0] - 2026-10-24
 
 ### Added

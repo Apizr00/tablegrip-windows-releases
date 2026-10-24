@@ -374,6 +374,13 @@ or `timescaledb://`.
   offer them, and the only maintenance command is *Update statistics* (`ANALYZE`). These two engines were built against the
   PostgreSQL catalogs and tested without a running server, so please report anything that a real cluster refuses.
 
+### The start screen: finding a connection
+- **Search** (Ctrl+F): type words and the list narrows to the connections where **every** word is found in the name, the address, the group, the tag or the engine (`shop prod`, `postgres`, `example.com`).
+  Put a prefix in front of a word to look in one place only: `tag:production` (or `env:`), `engine:redis` (or `db:`, `type:`), `group:work`, `name:shop`; quote a phrase with spaces: `group:"my work"`. Several can be combined:
+  `tag:prod engine:postgres`. Esc clears the search.
+- **Recently opened.** With four or more saved connections, the five opened most recently are listed again under a **Recently opened** header (below the connections that have no group, above the groups), so the one you were
+  using yesterday is at the top. These rows open, edit and delete the same connection; they cannot be dragged, so the order of the groups is never confused.
+- **Last opened** is shown at the right of each connection ("12 min ago", "yesterday", "15 Oct"), and nothing for one that was never opened.
 ### Passwords
 - *Store securely* encrypts the password for your Windows account. It is never written to `connections.json`.
 - *Ask every time* asks when you connect and keeps it in memory only.
