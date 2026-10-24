@@ -3,6 +3,16 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.11.0] - 2026-10-24
+
+### Added
+- **Cloudflare D1** in the database picker, through Cloudflare's REST API: the account id in *Host*, the database name (or id) in *Database* and an API token in *Password*.
+  Tables, views, structure, rows, editing (a commit is one batch, which D1 runs as one transaction, with a check that undoes it when a row count is not what it should be),
+  export and import work as for SQLite, which D1 is. Blob values cannot be written through the REST API and are refused with a message that says so.
+- **Not yet run against a real Cloudflare account**: it was tested against a stand-in that answers in Cloudflare's documented shape over a real SQLite.
+
+### Changed
+- The host box says what it is for (`HostPlaceholder`): the account id for D1, an address for the others.
 ## [2.10.0] - 2026-10-24
 
 ### Added

@@ -228,6 +228,21 @@ public endpoint and a security group that lets your address in). A `redshift://u
   (cancel with `CANCEL`, end with `pg_terminate_backend`), the status and the users; locks, replication, plans (`EXPLAIN` is text) and functions are not offered.
   A *Read-only* connection sends only statements that read, because Redshift cannot be told to open a session read-only.
 
+### Cloudflare D1
+Pick **Cloudflare D1**. In the form: *Host* is the **Account ID** (Cloudflare dashboard > Account home, 32 characters), *Database* is the name of the D1 database (or its id),
+and *Password* is an **API token** (My Profile > API Tokens > Create Token, with the permission **Account > D1 > Edit** to change data, or **Read** to look only).
+There is no port and no user name.
+
+> **Not yet run against a real Cloudflare account.** The connection was written from Cloudflare's documentation of the D1 REST API and tested against a stand-in that
+> answers the same requests over a real SQLite. If something differs on the real service, tell us what you saw.
+
+- **What you see.** The tables and views of the database, the structure with its keys, indexes and foreign keys, and the rows, as for SQLite (D1 is SQLite). The tables
+  Cloudflare keeps for itself (`_cf_*`) are hidden.
+- **Editing.** A commit is sent as one batch, which D1 runs as one transaction: when a row was changed by someone else, or a statement fails, nothing is saved.
+  Blob (binary) values cannot be written through the REST API, so a blob column is read-only here. There is no session that stays open, so `BEGIN` and `COMMIT`
+  typed in the editor do nothing useful; a script runs one statement at a time.
+- **Not offered.** Users and rights (an API token is the right), creating databases (use the dashboard or `wrangler`), file backups.
+- A *Read-only* connection sends only statements that read.
 ### Greenplum
 Pick **Greenplum**: the master host as *Host*, port **5432** (or the one your cluster uses), the user (`gpadmin` is the usual one), the password
 and the database. It uses the PostgreSQL driver, so tables, views, editing, import, export, the designer, administration and TLS work as they do for
