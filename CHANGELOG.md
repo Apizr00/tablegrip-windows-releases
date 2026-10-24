@@ -3,6 +3,23 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.7.0] - 2026-10-24
+
+### Added
+- **Amazon Redshift** (the last engine of phase J). Pick Amazon Redshift: cluster endpoint, port 5439, user, password, database and TLS; a `redshift://` URL can
+  be pasted. It uses the PostgreSQL driver with catalog queries of its own, because Redshift is PostgreSQL 8.0 underneath.
+  - **Browse.** Schemas, tables and views; types, defaults, `IDENTITY` columns, comments, the primary key and unique constraints (shown as *not enforced*),
+    foreign keys, the **DISTKEY** and **SORTKEY** in the place of indexes, the distribution style, rows, size and the `CREATE TABLE` statement.
+  - **Edit** as for PostgreSQL; since Redshift does not enforce a primary key, an edit that matches more than one row is refused instead of changing them all.
+  - **Designer** with `IDENTITY(1,1)`; no indexes or checks, a varchar-only `ALTER COLUMN TYPE` and no NOT NULL change, each said in the review window.
+    Analyze and Vacuum; import by row for skip and update (`MERGE INTO`, no `ON CONFLICT`); administration from `stv_recents` and `pg_user`. A read-only connection
+    sends only reads.
+  - **Not yet run against a real cluster.** The catalog queries were checked against a current PostgreSQL (valid SQL, keys read by subscript, fallbacks when
+    Redshift-only objects are absent); the Redshift-only parts follow AWS's documentation. Please report anything that differs.
+
+### Changed
+- `CockroachDB`, `TimescaleDB` and Redshift share the PostgreSQL provider; nothing changes for them.
+
 ## [2.6.0] - 2026-10-24
 
 ### Added

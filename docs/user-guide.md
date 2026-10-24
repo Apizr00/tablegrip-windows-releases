@@ -208,6 +208,26 @@ so no Oracle client has to be installed.
   these pages read `v$` and `dba_` views, which need rights that an ordinary user does not have: the page then shows the ORA-00942 message.
 - **Not covered.** Oracle Cloud wallets, Kerberos and other external logins, `REF CURSOR` results, and editing LOB columns (they are shown as text or bytes).
 
+### Amazon Redshift
+Pick **Amazon Redshift**: the cluster endpoint as *Host* (`cluster.abc123.eu-west-1.redshift.amazonaws.com`), port **5439**, the user and password, the
+**database** (`dev` by default), and *SSL mode* *Required* or stricter (Redshift clusters take TLS). The cluster must be reachable from your machine (a
+public endpoint and a security group that lets your address in). A `redshift://user:password@host:5439/dev` URL can be pasted into *Host*.
+> **Not yet run against a real cluster.** Redshift cannot be run on the development machine. The catalog queries were written for the PostgreSQL 8.0
+> that Redshift is built on, and run against a current PostgreSQL to check that the SQL is valid and the keys are read right; the Redshift-only tables
+> (`stv_recents`, `svv_table_info`) and columns (`attisdistkey`) were taken from AWS's documentation. Please report anything that differs.
+- **What you see.** Schemas (without the system ones), tables and views; the structure shows the types as Redshift writes them, defaults, `IDENTITY(seed,step)`
+  columns, comments, the primary key and unique constraints (marked *not enforced*, because Redshift only uses them to plan queries), foreign keys, the
+  **DISTKEY** and **SORTKEY** of the table in the place of indexes, the distribution style, rows and size (from `svv_table_info`) and the `CREATE TABLE`
+  from `SHOW TABLE`. Late-binding views, external (Spectrum) tables and materialized views are not listed.
+- **Editing.** Works as for PostgreSQL, with one difference to know: Redshift does not enforce a primary key, so two rows can have the same key. An edit that
+  matches more than one row is refused ("affected 2 rows instead of 1"), and nothing is saved.
+- **Designer.** `CREATE TABLE` with `IDENTITY(1,1)`; no indexes and no checks (the designer says so). `ALTER COLUMN ... TYPE` only works to make a varchar longer,
+  and NOT NULL cannot be changed on a column that exists: the review window says which change was left out. Distribution and sort keys are set with SQL.
+- **Other tools.** *Analyze* and *Vacuum* (`VACUUM` runs on its own, outside a transaction). Import: *stop on duplicates* inserts many rows per statement; *skip* and *update*
+  go row by row (`INSERT ... WHERE NOT EXISTS`, `MERGE INTO`) because Redshift has no `ON CONFLICT`. Administration shows the running queries from `stv_recents`
+  (cancel with `CANCEL`, end with `pg_terminate_backend`), the status and the users; locks, replication, plans (`EXPLAIN` is text) and functions are not offered.
+  A *Read-only* connection sends only statements that read, because Redshift cannot be told to open a session read-only.
+
 ### CockroachDB and TimescaleDB
 Both are chosen in the same picker as the other engines and use the PostgreSQL driver, so tables, views, indexes, foreign keys,
 editing, import, export, the designer and TLS work as they do for PostgreSQL. A connection URL can start with `cockroachdb://`
