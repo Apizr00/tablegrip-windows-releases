@@ -3,6 +3,34 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.2.0] - 2026-10-24
+
+### Added
+- **Redis** (phase J5, first half). Pick Redis in the new-connection picker (host, port 6379, optional user and password, TLS,
+  database number; empty is 0). The keyspace of the database opens as one table, `db0`, with a row per key and the columns
+  **key**, **value**, **type** and **ttl**, like in TablePlus: strings show as text, and hashes, lists, sets, sorted sets and
+  streams show as JSON (a hash is an object, a list or set an array, a sorted set a flat `[member, score, ...]` array).
+  - **Browse and search.** Paged with the count from `DBSIZE`, sorted by key, with the filter bar (equals, contains, `IN`,
+    `BETWEEN`, null, ...), quick search, sorting and the *Structure* tab (key, value, type and ttl). Only the keys on screen
+    have their values read; a string over 1 MB or a collection of more than 5,000 items shows a placeholder and is left alone.
+  - **Edit like a table.** Change a value, the **ttl** (seconds; empty makes the key permanent) or the **key** (a rename), add a
+    row with **+ Row** (give the value of a hash, list, set, sorted set or stream as JSON) and delete rows. Changes are staged,
+    the SQL is shown first, and the commit is one `WATCH` / `MULTI` / `EXEC` transaction: if another client changed a key in the
+    meantime nothing is applied and you are told which key. A key with binary content is listed but never written back.
+    **Truncate** is `FLUSHDB`.
+  - **A console for commands.** A query tab on a Redis connection takes Redis commands, one per line (`GET user:1`,
+    `HGETALL session:abc`, `CONFIG GET maxmemory`, quoting as in `redis-cli`; lines starting with `#` are comments), and
+    the SQL the grid writes. Replies are shown as rows (pairs for hashes, a line each for `INFO`). Safe mode sorts commands by
+    what they do: a read passes, `SET` or `EXPIRE` asks (or is refused in read-only), `DEL`, `UNLINK`, `FLUSHDB` and
+    `FLUSHALL` are destructive. `SELECT n`, subscriptions and `MULTI` are not available in a tab, with a message that says why.
+  - **Administration** shows the sessions (`CLIENT LIST`, with kill), the server status and the databases (`db0` to `dbN`) from
+    `INFO`, `CONFIG` and `CLIENT`.
+  - It is a small client of its own (RESP2 over a socket, TLS, AUTH with user and password), so the download does not grow.
+    Tables, schemas, views, ER diagrams, migrations, backups and the other SQL tools are hidden or say that Redis has none.
+- **Engines without SQL.** The way Redis is mapped is general: the SQL that TableGrip writes (filters, pages, row edits) is read
+  by a small parser and run against the engine's own commands, and a statement that is not SQL is sent as a command. MongoDB
+  (next release) uses the same parts.
+
 ## [2.1.1] - 2026-10-24
 
 ### Added

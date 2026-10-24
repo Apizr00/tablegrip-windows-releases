@@ -58,6 +58,34 @@ given on the command line; the engine follows the file. **New...** next to the f
   script in one go, for example `ATTACH 'other.duckdb' AS other (READ_ONLY); SELECT * FROM other.sales;` (a script is run on one
   connection, so the attached file is there for the next statement). Attached files are not listed in the sidebar.
 
+### Redis
+Pick **Redis** in the new-connection picker: host, port (6379), the user (empty for the `default` user or none) and password,
+TLS if the server needs it, and the **database number** (`0` to `15` on a default server; empty is `0`).
+- **One table per database.** The keys of the database are the rows of a table named `db0` (`db3` for database 3), with the
+  columns `key`, `value`, `type` and `ttl` (seconds left; empty when the key never expires). Open it with a double-click.
+  Strings show as text; hashes, lists, sets, sorted sets and streams show as JSON (a hash is an object, a list or set an array,
+  a sorted set a flat array of member and score). **Database > Switch database...** lists `db0`, `db1`, ... of the server.
+- **Browse, search, sort.** The filter bar, quick search and column sort work as for any table. Paging asks the server only for
+  the keys on the page, in name order (the first 200,000 keys of a very large database), and reads the values of the rows
+  shown. A string over 1 MB or a collection over 5,000 items shows a note instead of its value and cannot be edited here.
+- **Edit.** Change the value, the ttl or the key, add a row with **+ Row** and delete rows; changes are staged and the SQL is
+  shown before it is committed. A **ttl** of 60 is `EXPIRE key 60`, an empty ttl is `PERSIST`, a new key name is `RENAME`.
+  A collection is written back as JSON (`{"name": "Ada"}` for a hash, `["a", "b"]` for a list or set, `["x", 1.5]` for a sorted
+  set); to add one with **+ Row** give the value as JSON, and a *type* of `hash`, `list`, `set` or `zset` (empty is `string`).
+  The commit is one transaction (`WATCH`, `MULTI`, `EXEC`): when another client changed a key you edited, nothing is
+  applied and the message names the key; reload and try again. A key with binary content is shown as bytes and is read only.
+  **Truncate** on the table runs `FLUSHDB` and asks first.
+- **Commands.** In a query tab type Redis commands, one per line (`GET user:1`, `HGETALL session:abc`, `TTL user:1`,
+  `CONFIG GET maxmemory`); quote a value with spaces as in `redis-cli` (`SET greeting "hello world"`). Lines that start with `#`
+  are comments and Ctrl+Enter runs the line at the caret (or the selection), Ctrl+Shift+Enter every line. Replies appear as a result grid: pairs for a hash
+  or `CONFIG GET`, one line per row for text like `INFO`. `SELECT n` (use the toolbar), `SUBSCRIBE`, `MONITOR`, `MULTI` and
+  the blocking commands need a connection of their own and are refused with a message.
+- **Safe mode** knows Redis: reads pass, `SET`, `EXPIRE`, `HSET`... count as changes, and `DEL`, `UNLINK`, `FLUSHDB` and
+  `FLUSHALL` are destructive. A *Read-only* connection refuses everything but reads.
+- **Not for Redis.** There is no schema, so design, clone, rename, scripts, ER diagram, migrations, schema compare, SQL dumps and
+  maintenance are hidden or say so. CSV and JSON export and import of the keys work. Administration shows the clients (kill
+  works), the server status (`INFO`) and the databases. Redis Cluster, Sentinel, pub/sub and modules are not covered.
+
 ### CockroachDB and TimescaleDB
 Both are chosen in the same picker as the other engines and use the PostgreSQL driver, so tables, views, indexes, foreign keys,
 editing, import, export, the designer and TLS work as they do for PostgreSQL. A connection URL can start with `cockroachdb://`
