@@ -3,6 +3,19 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.16.0] - 2026-10-24
+
+### Added
+- **Cassandra** in the database picker, through the DataStax driver (1.2 MB): contact points in *Host*, a login when the cluster asks for one, and the **keyspace** in *Database*. Tables and materialized views, columns in the order
+  Cassandra stores them with their CQL types, the partition key, the clustering key and the secondary indexes are shown; lists, sets and maps are shown as JSON. Browsing, paging, sorting and the filter bar work: a condition on the
+  whole key is answered by Cassandra, anything else is evaluated on the first 50,000 rows. CQL of your own (`ALLOW FILTERING`, `keyspace.table`, `CREATE TABLE`) runs as typed in a query tab.
+- **Editing** reads the rows first (so an `UPDATE` of a row that is not there is reported, not created) and sends the changes as a logged batch, in batches of 100 statements.
+- **Not yet run against a real cluster**: tested against a stand-in cluster that answers from a script.
+- Not offered yet: the designer, schema comparison, and importing over existing rows (Cassandra writes over them anyway).
+
+### Changed
+- Lists, sets, maps and tuples (`list<text>`, `map<text, int>`) are recognised as collections in the grid editor instead of as numbers or text.
+- `Newtonsoft.Json` is pinned to 13.0.4 because the Cassandra driver asks for a vulnerable version.
 ## [2.15.0] - 2026-10-24
 
 ### Added

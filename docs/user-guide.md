@@ -228,6 +228,22 @@ public endpoint and a security group that lets your address in). A `redshift://u
   (cancel with `CANCEL`, end with `pg_terminate_backend`), the status and the users; locks, replication, plans (`EXPLAIN` is text) and functions are not offered.
   A *Read-only* connection sends only statements that read, because Redshift cannot be told to open a session read-only.
 
+### Cassandra
+Pick **Cassandra** (Scylla and Astra answer the same protocol): *Host* is a node, or several separated by commas, *Port* is 9042, and *User* and *Password* sign in when the cluster asks for a login (leave them empty when it does not).
+*Database* is the **keyspace** to open: a connection shows one keyspace, and its tables and materialized views. SSL mode *Required* or stricter turns TLS on (*Verify* also checks the certificate).
+
+> **Not yet run against a real Cassandra.** The catalog queries (`system_schema`) and the statements were written from the CQL documentation and tested against a stand-in that answers from a script. Tell us what a real cluster does differently.
+
+- **What you see.** The tables and views of the keyspace, the columns in the order Cassandra stores them (the partition key, the clustering key, then the rest by name) with their CQL types, the partition key and the clustering key as the table's keys,
+  the secondary indexes and the table's comment. A list, a set or a map is shown as its JSON, and edited as a CQL literal (`['a', 'b']`, `{'a': 1}`).
+- **Reading is not like SQL.** Cassandra has no joins, no `OFFSET` and no free filtering. A condition that names **every column of the key** is sent to Cassandra and answers at once; a page with no condition reads the table from its
+  start; **anything else** (a search, a filter on another column, a sort) is evaluated here on the first 50,000 rows of the table, and a bigger table asks for the key. For your own CQL (`ALLOW FILTERING`, `keyspace.table`, `CREATE TABLE`, `DESCRIBE`)
+  use a query tab: what TableGrip does not read as its own simple SQL is sent as it is. A row count with `COUNT(*)` reads the whole table and may time out on a big one.
+- **Editing.** `INSERT` and `UPDATE` are upserts in Cassandra (a row is written over the one with the same key). TableGrip reads the rows an `UPDATE` or `DELETE` addresses first, so it can tell you when the row is not there (Cassandra would create it),
+  then sends the changes as a **logged batch** (atomic, with no isolation), cut into batches of 100 statements: when a commit is longer than that and a later batch fails, the earlier ones stay and the message says how many. A column of the key cannot be changed: delete the row and insert it again.
+- **Import** writes rows (over any with the same key); skipping or updating separately makes no sense there and is not offered.
+- **Not offered yet.** The table designer, schema comparison, users and roles (CQL does that in a query tab).
+- A *Read-only* connection sends only statements that read.
 ### BigQuery
 Pick **BigQuery**. *Host* is the **project id** (`my-project-123456`): the project that runs and is billed for the queries. *Database* is empty to show every dataset of the project, a dataset (`shop`) to show just that one, or
 `project.dataset` for a dataset of another project, such as `bigquery-public-data.samples`. Sign in with either:

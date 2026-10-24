@@ -9,10 +9,12 @@ reproduced here as those licences require. TableGrip itself is licensed under th
 | Apache.Arrow.Scalars | 23.0.0 | Apache-2.0 | Copyright 2016-2025 The Apache Software Foundation | https://arrow.apache.org/ |
 | AvalonEdit | 6.3.1.120 | MIT | 2000-2025 AlphaSierraPapa for the SharpDevelop Team | http://www.avalonedit.net/ |
 | BouncyCastle.Cryptography | 2.7.0 | MIT | Copyright © Legion of the Bouncy Castle Inc. 2000-2026 | https://www.bouncycastle.org/stable/nuget/csharp/website |
+| CassandraCSharpDriver | 3.22.1 | Apache License 2.0 (LICENSE.md in the package) | Copyright © by DataStax | https://github.com/datastax/csharp-driver |
 | CommunityToolkit.Mvvm | 8.4.2 | MIT | (c) .NET Foundation and Contributors. All rights reserved. | https://github.com/CommunityToolkit/dotnet |
 | DnsClient | 1.6.1 | Apache-2.0 | Copyright (c) 2021 Michael Conrad | http://dnsclient.michaco.net/ |
 | DuckDB.NET.Bindings.Full | 1.5.6 | MIT | Copyright © 2020 - 2026 Giorgi Dalakishvili | https://github.com/Giorgi/DuckDB.NET |
 | DuckDB.NET.Data.Full | 1.5.6 | MIT | Copyright © 2020 - 2026 Giorgi Dalakishvili | https://github.com/Giorgi/DuckDB.NET |
+| K4os.Compression.LZ4 | 1.1.11 | see https://raw.githubusercontent.com/MiloszKrajewski/K4os.Compression.LZ4/master/LICENSE |  | https://github.com/MiloszKrajewski/K4os.Compression.LZ4 |
 | Microsoft.Bcl.Cryptography | 9.0.18 | MIT | © Microsoft Corporation. All rights reserved. | https://dot.net/ |
 | Microsoft.Data.SqlClient | 7.1.1 | MIT | © Microsoft Corporation. All rights reserved. | https://aka.ms/sqlclientproject |
 | Microsoft.Data.SqlClient.Extensions.Abstractions | 7.1.1 | MIT | © Microsoft Corporation. All rights reserved. | https://aka.ms/sqlclientproject |
@@ -35,10 +37,12 @@ reproduced here as those licences require. TableGrip itself is licensed under th
 | Microsoft.IdentityModel.Protocols | 8.16.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet |
 | Microsoft.IdentityModel.Protocols.OpenIdConnect | 8.16.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet |
 | Microsoft.IdentityModel.Tokens | 8.16.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet |
+| Microsoft.NETCore.Platforms | 3.1.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/dotnet/corefx |
 | Microsoft.SqlServer.Server | 1.0.0 | MIT | © Microsoft Corporation. All rights reserved. | https://aka.ms/sqlclientproject |
 | MongoDB.Bson | 3.12.0 | Apache-2.0 | Copyright © 2010-present MongoDB Inc. | https://www.mongodb.com/docs/drivers/csharp/ |
 | MongoDB.Driver | 3.12.0 | Apache-2.0 | Copyright © 2010-present MongoDB Inc. | https://www.mongodb.com/docs/drivers/csharp/ |
 | MySqlConnector | 2.6.2 | MIT | Copyright 2016–2026 Bradley Grainger | https://mysqlconnector.net/ |
+| Newtonsoft.Json | 13.0.4 | MIT | Copyright © James Newton-King 2008 | https://www.newtonsoft.com/json |
 | Npgsql | 10.0.3 | PostgreSQL | Copyright 2025 © The Npgsql Development Team | https://github.com/npgsql/npgsql |
 | Oracle.ManagedDataAccess.Core | 23.26.400 | Oracle Free Distribution, Hosting, and Use Terms and Conditions (LICENSE.txt in the package) | Copyright © 2026, Oracle and/or its affiliates | https://www.oracle.com/database/technologies/appdev/dotnet.html |
 | SharpCompress | 0.48.1 | MIT | Copyright (c) 2025 Adam Hathcock | https://github.com/adamhathcock/sharpcompress |
@@ -51,6 +55,7 @@ reproduced here as those licences require. TableGrip itself is licensed under th
 | System.ComponentModel.Annotations | 5.0.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/dotnet/runtime |
 | System.DirectoryServices.Protocols | 8.0.2 | MIT | © Microsoft Corporation. All rights reserved. | https://dot.net/ |
 | System.IdentityModel.Tokens.Jwt | 8.16.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet |
+| System.Management | 4.7.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/dotnet/corefx |
 | System.Threading.RateLimiting | 9.0.18 | MIT | © Microsoft Corporation. All rights reserved. | https://dot.net/ |
 | Velopack | 1.2.158 | MIT | Copyright © Velopack Ltd. All rights reserved. | https://github.com/velopack/velopack |
 | Vertica.Data | 24.3.0 | see https://www.vertica.com/client-driver-eula/ | Copyright © 2023 OpenText Corporation | https://docs.vertica.com/latest/en/connecting-to/client-libraries/client-drivers/install-config/ado-netr/ |
