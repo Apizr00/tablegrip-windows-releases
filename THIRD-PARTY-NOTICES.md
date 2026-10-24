@@ -5,9 +5,13 @@ reproduced here as those licences require. TableGrip itself is licensed under th
 
 | Package | Version | Licence | Copyright | Project |
 |---|---|---|---|---|
+| Apache.Arrow | 23.0.0 | Apache-2.0 | Copyright 2016-2025 The Apache Software Foundation | https://arrow.apache.org/ |
+| Apache.Arrow.Scalars | 23.0.0 | Apache-2.0 | Copyright 2016-2025 The Apache Software Foundation | https://arrow.apache.org/ |
 | AvalonEdit | 6.3.1.120 | MIT | 2000-2025 AlphaSierraPapa for the SharpDevelop Team | http://www.avalonedit.net/ |
 | BouncyCastle.Cryptography | 2.7.0 | MIT | Copyright © Legion of the Bouncy Castle Inc. 2000-2026 | https://www.bouncycastle.org/stable/nuget/csharp/website |
 | CommunityToolkit.Mvvm | 8.4.2 | MIT | (c) .NET Foundation and Contributors. All rights reserved. | https://github.com/CommunityToolkit/dotnet |
+| DuckDB.NET.Bindings.Full | 1.5.6 | MIT | Copyright © 2020 - 2026 Giorgi Dalakishvili | https://github.com/Giorgi/DuckDB.NET |
+| DuckDB.NET.Data.Full | 1.5.6 | MIT | Copyright © 2020 - 2026 Giorgi Dalakishvili | https://github.com/Giorgi/DuckDB.NET |
 | Microsoft.Bcl.Cryptography | 9.0.18 | MIT | © Microsoft Corporation. All rights reserved. | https://dot.net/ |
 | Microsoft.Data.SqlClient | 7.1.1 | MIT | © Microsoft Corporation. All rights reserved. | https://aka.ms/sqlclientproject |
 | Microsoft.Data.SqlClient.Extensions.Abstractions | 7.1.1 | MIT | © Microsoft Corporation. All rights reserved. | https://aka.ms/sqlclientproject |

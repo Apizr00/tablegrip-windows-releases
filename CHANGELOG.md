@@ -3,6 +3,33 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.1.0] - 2026-10-24
+
+### Added
+- **DuckDB** (phase J2, first half). The new-connection picker offers DuckDB and a `.duckdb` or `.ddb` file is opened like a SQLite
+  one (**File > Open database file**, drop, command line); other file names are told apart by their header, so the right engine is
+  used for a recent file too. The sidebar shows the schemas, tables, views and sequences of the file; the structure view shows
+  keys, indexes, foreign keys, checks and comments; lists, structs and maps read as DuckDB prints them; queries, editing,
+  import, export, backup and restore, clone, truncate, the table designer and the command line (`tablegrip-cli`) all work, and
+  `duckdb://path` is understood in a connection URL.
+- **New...** next to the file name of a SQLite or DuckDB connection starts a new, empty database in a file you name.
+- **Maintenance and status for DuckDB**: *Update statistics* (`ANALYZE`), *Optimize* for the whole file (`CHECKPOINT`) and a server
+  status with the version, file size and memory in use.
+- A DuckDB file is one database and has no users, so the pages for users, sessions and locks say so.
+
+### Changed
+- **The designer works around what DuckDB refuses.** DuckDB will not run `ALTER TABLE` on a table that has an index, so the SQL
+  drops the indexes, changes the table and creates them again (and says so); a NOT NULL column is added in two steps; auto-numbered
+  columns and foreign keys with ON DELETE actions are refused with an explanation; and foreign keys, checks and an existing primary
+  key cannot be changed on an existing table, which is said in a warning instead of sending a statement that would fail.
+- Renaming a table from the sidebar reads its indexes first on DuckDB, for the same reason.
+- The download is about 14 MB larger, for the DuckDB engine that travels with it.
+
+### Fixed
+- A **date** or **time** read as a `DateOnly` or `TimeOnly` was written as `02/03/2000` in a backup, a copied INSERT and a CSV or
+  JSON export (the format of the invariant culture), which engines read differently or refuse. They are now `2000-02-03` and
+  `01:02:03`.
+
 ## [2.0.0] - 2026-10-24
 
 ### Added

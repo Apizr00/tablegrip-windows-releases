@@ -5,7 +5,7 @@
 1. **Create connection** (Ctrl+N), choose the database type, fill in host, port, user, password and **database name**.
    Each connection opens exactly one database.
 2. **Test** checks the settings without saving. **Save** keeps it in the list; **Connect** saves and opens it.
-3. SQLite files can also be opened directly (Ctrl+O) or dropped onto the window.
+3. SQLite and DuckDB files can also be opened directly (Ctrl+O) or dropped onto the window.
 4. **Groups and order.** Right-click the list and choose New > Group... to make a group. Drag a connection onto a
    group header to put it last in that group, or onto another connection (a line shows whether it goes above or below)
    to place it there, in that connection's group or out of any group when that one has none. Dropped on the empty space it
@@ -29,6 +29,30 @@
    port), the database login and a first query. Each step shows its time; the first one that fails stops the check, says what
    it most likely means and what to try, and the steps after it are marked as skipped. *Copy report* puts the result on the
    clipboard for a bug report. Recently opened tables come first in the command palette (Ctrl+K, Ctrl+P).
+
+### DuckDB
+DuckDB is an embedded analytical database kept in one file (`.duckdb`, `.ddb`, or any name: TableGrip reads the file's header).
+It is chosen in the new-connection picker, or a file is opened with **File > Open database file**, dropped on the window or
+given on the command line; the engine follows the file. **New...** next to the file name starts a new, empty database.
+- **One program at a time.** DuckDB lets only one program write to a file, so while a connection is open the file is locked
+  (close the connection to release it; a SQLite file is released after each action). A file that another program has open
+  says so when you connect; *Read-only* in the connection's safe mode opens it with `access_mode=READ_ONLY`.
+- **What you see.** The schemas of the file (`main` first; DuckDB's own are hidden), tables, views, sequences (under
+  *Sequences*; DuckDB has no triggers or routines to list), comments, primary and unique keys, indexes, foreign keys and checks.
+  Lists, structs and maps show the way DuckDB prints them (`[1, 2]`, `{'a': 1}`), a `BLOB` opens in the binary viewer, and a
+  `UNION` column, which the driver cannot read, shows `(unsupported type ...)` instead of failing the result.
+  `SELECT * FROM 'file.parquet'` and `read_csv(...)` work in a query tab like in any DuckDB client.
+- **Editing** works as for other engines (staged, SQL shown first, one transaction). *n rows affected* is real for INSERT,
+  UPDATE and DELETE.
+- **Changing a table.** DuckDB does not let an `ALTER TABLE` run on a table that has an index (rename, retype, NOT NULL, drop
+  column, rename table), so the review SQL drops the indexes, changes the table and creates them again, and says so. It also
+  cannot add a column with NOT NULL (the SQL adds it, then sets NOT NULL), has no auto-numbered columns (give the column a
+  default of `nextval('sequence')`), knows only NO ACTION and RESTRICT for foreign keys, and cannot add or drop a foreign key,
+  a check or an existing primary key on an existing table: those changes are left out with a warning. To get such a table,
+  make a copy with *Clone table...* from a design that has them.
+- **Maintenance.** *Update statistics* (`ANALYZE`) for a table or the whole file, and *Optimize* for the whole file (`CHECKPOINT`).
+  There are no users, sessions or locks to show; *Server status* shows the version, the file size, the memory in use and more.
+- Not offered yet: the Explain plan viewer, and attaching a second database file.
 
 ### CockroachDB and TimescaleDB
 Both are chosen in the same picker as the other engines and use the PostgreSQL driver, so tables, views, indexes, foreign keys,
