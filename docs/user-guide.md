@@ -57,7 +57,7 @@ The *Tag* drop-down marks what a connection is for: **None**, **local**, **devel
 **production**. Choose **Custom...** to type a name of your own (up to 24 characters); your tags stay in the list for
 the next connection. While one of your own tags is chosen, the bin button next to the drop-down deletes it from the list
 (after asking; connections that used it simply have no tag). The built-in tags cannot be deleted. The tag is shown next to the name on the start screen and in the title-bar pill. Only
-**production** switches safe mode to *Confirm changes* by itself.
+**production** switches safe mode from Silent to Warn by itself.
 
 ### Colour
 Each connection has a colour dot on the start screen and in the connection rail. Under *Colour* pick one of the swatches
@@ -67,8 +67,17 @@ picker**: a wheel for hue and saturation, a brightness and a saturation slider, 
 and a star that saves the colour to your own list (click a saved colour to use it, right-click to remove it).
 
 ### Safe mode
-Per connection: **Off**, **Confirm changes** (every statement that writes or changes the schema asks first; destructive
-ones are marked) and **Read-only** (writes are refused). Marking a connection *production* turns Off into Confirm.
+Per connection, four levels (like TablePlus):
+
+| Level | What happens when something would change the database |
+|---|---|
+| **Silent** | Nothing extra: statements run at once. |
+| **Warn** | Every statement that writes or changes the schema asks first; destructive ones are marked. |
+| **Verify** | Like Warn, and then TableGrip checks it is you: **Windows Hello** (face, fingerprint, PIN or the Windows password), or your **TableGrip password** when Hello is not set up. If neither exists the connection name is asked for instead. |
+| **Read-only** | Writes are refused. Editing is off. |
+
+Marking a connection *production* turns Silent into Warn. Verify covers running statements, saving staged row edits (and
+edits to a query result), applying a structure change, restoring a backup and applying migrations; reading never asks.
 Safe mode is a guard against mistakes, not a security boundary: for a hard guarantee use a database account without
 write privileges.
 
@@ -76,6 +85,20 @@ write privileges.
 `DELETE` without a `WHERE`), committing deleted rows, and restoring a backup each ask you to **type the connection's
 name** before they go on, instead of just clicking OK. Turn it off in Preferences > Safety. Read-only connections still
 refuse writes.
+
+### The TableGrip password and the app lock
+**Preferences > Safety** has the pieces that Verify and the lock share:
+- **Windows Hello.** When it is set up on the computer TableGrip uses it first. The line under *Safety* says whether it is.
+- **TableGrip password.** *Set password...* keeps a salted hash (PBKDF2) of a password of at least four characters in
+  `settings.json`; the password itself is never stored and cannot be recovered. It stands in for Windows Hello, and it is
+  asked for with three tries. *Change password...* and *Remove password* ask for the current one first.
+- **Lock TableGrip when it starts.** Before any window with your connections opens, TableGrip asks for Windows Hello or the
+  password; *Quit* leaves without opening anything. Turning the lock on first asks you to unlock once, so you cannot set up
+  a lock you cannot open. If both Hello and the password are gone, TableGrip opens unlocked rather than lock you out.
+
+The lock keeps someone at your unlocked computer out of your saved connections. It is not encryption: someone who can edit
+the files in `%APPDATA%\TableGrip` can switch it off, saved logins stay protected by Windows (DPAPI) as before, and the
+command line (`tablegrip-cli`) is not locked.
 
 ## Backup and restore
 
@@ -215,6 +238,8 @@ asked first, and if you keep them both stay open. The saved connection is not ch
 | Format the SQL | Ctrl+Shift+F |
 | Find and replace | Ctrl+H |
 | Split the editor / zoom | Ctrl+ / Ctrl+wheel, Ctrl+0 resets |
+| Add the next match as a caret / select every match | Ctrl+D / Ctrl+Shift+L |
+| Add a caret above / below, or where you click | Ctrl+Alt+Up, Ctrl+Alt+Down, Ctrl+Alt+click |
 
 **Format, find and fold.** **Format** (Ctrl+Shift+F) lays out the selection, or all the SQL, with one clause per line, one
 select item per line and keywords in capitals; nothing but white space and keyword case changes, and Ctrl+Z undoes it.
@@ -223,6 +248,27 @@ undo step). Ctrl+F still opens the editor's own search. The margin has fold mark
 groups, CASE and BEGIN blocks and block comments. **Split** (Ctrl+\) shows a second view of the same text below the first.
 **Ctrl+wheel** zooms the text of the tab and **Ctrl+0** resets it. Hold **Alt** and drag to select a block of columns
 (box selection) and type to change every line of it at once.
+
+**Several carets.** **Ctrl+D** selects the word at the caret and then adds the next match of the selected text (wrapping round to
+the start), **Ctrl+Shift+L** selects every match, **Ctrl+Alt+Up / Down** adds a caret on the line above or below in the same
+column, and **Ctrl+Alt+click** adds one where you click. Typing, Backspace, Delete, Enter, Tab, the arrow keys (also with
+Shift), Home / End, Ctrl+C, Ctrl+X and Ctrl+V then act at every caret, and the whole edit is one undo step. Paste puts one
+line at each caret when the clipboard holds as many lines as there are carets, the same text at each otherwise. **Esc**, a
+click, undo or any command collapses them back to the last caret.
+
+**Vim mode.** **Preferences > Editor > Vim mode** turns the SQL editor into a modal editor; a badge in the corner shows the
+mode and the keys typed so far. The editor starts in normal mode (press **i** to type, **Esc** to come back).
+- *Moving:* `h j k l` (and the arrows), `w W b B e E`, `0 ^ $`, `gg G` (with a line number: `12G`), `f F t T` with `;` `,`,
+  `%` (matching bracket), `{ }` (paragraphs); a count in front repeats (`3w`, `5j`).
+- *Editing:* `x X D C s S r J ~ p P`, `i a I A o O`, `u` and **Ctrl+R** (undo and redo), `.` repeats the last change
+  (with the text you typed in it). `d c y > <` and `gu gU g~` take a motion or a text object (`dw`, `c$`, `y2j`, `>>`,
+  `dd`, `cc`, `yy`); text objects are `iw aw`, `i" a"`, `i' a'`, ``i` a` ``, `i( a( ib`, `i{ a{ iB`, `i[ a[`, `i< a<`
+  (so `ci'` and `di(` work as in Vim).
+- *Selecting:* `v` (characters) and `V` (lines), motions and text objects extend the selection, then `d y c > < u U ~ J r p`;
+  `o` swaps the ends.
+- *Clipboard:* yanks and deletes are also put on the Windows clipboard, and `p` pastes what you copied elsewhere.
+- *Not included:* `:` commands, `/` search (Ctrl+F still works), marks, macros, registers other than the unnamed one and block
+  selection. Ctrl shortcuts that Vim has no use for (Ctrl+Enter to run, Ctrl+S, Ctrl+C...) keep working in every mode.
 
 **Parameters.** Write `:name` in a query (`WHERE customer_id = :id`) and TableGrip asks for the value each time it runs;
 the values are sent as parameters, never pasted into the text. Leave a box empty or type NULL for NULL; numbers and
@@ -436,7 +482,8 @@ tablegrip-cli backup  -c Shop -o shop.sql
 - `query` prints an aligned table by default; `-f` picks `csv`, `json`, `sql` or `xlsx` (a file with `-o`). With several
   statements, the result of the last one is written.
 - Queries are **read-only** unless `--write` is given. On a connection tagged Production, `--write` also needs
-  `--yes-production`.
+  `--yes-production`. The command line cannot show Windows Hello or ask for the TableGrip password, so on a **Verify**
+  connection `--write` is the confirmation, as on a Warn one; the app lock does not apply to it either.
 - A connection that asks for its password each time reads it from the `TABLEGRIP_PASSWORD` environment variable (an SSH secret
   from `TABLEGRIP_SSH_SECRET`). An SSH host key that is not trusted yet is refused: connect once in the app first.
 - The exit code is 0 when it worked, 1 when it failed (the reason is on the error output) and 2 when the command line was
@@ -518,11 +565,23 @@ Updates are checked when TableGrip starts (you can turn that off in Preferences)
   Contrast), *On* always, *Off* gives opaque panels with the same layout and colours. Panels show a blurred copy of
   the colourful backdrop behind them.
 - **Layout**: *Floating* (separate rounded panels with gaps) or *Docked* (flush panels, no gaps). Both layouts work with either look.
+- **Theme file**: a `.json` file that lays your colours over the light or dark set (and sets the colours of the SQL
+  syntax). *Export the theme in use...* writes every colour of what you see now, so you can change a few values in a text editor
+  and *Import...* the file again (the themes are kept in the `themes` folder, *Open folder* shows it). A file looks like
+  `{ "name": "Sunset", "base": "light", "colors": { "Accent": "#D9480F", "Window": "#F4E6DA" }, "syntax": { "keyword": "#D9480F" } }`:
+  `base` is `light` or `dark` and decides which one the theme starts from (it then ignores the colour scheme choice),
+  colours are `#RRGGBB` or `#AARRGGBB`, names are the tokens of the app without the `Brush.` prefix, and the syntax roles are
+  `keyword`, `type`, `function`, `string`, `number`, `comment` and `quoted`. Colours left out keep their built-in value, names the app does not know
+  are ignored, and an entry that is not a colour is skipped with a note. With transparency off the app uses the `...Opaque`
+  twin of a translucent colour (`Window` becomes `WindowOpaque`), so a theme that changes one should change both.
+- **Fonts**: the editor font and size, and the **data grid font** and size (the grid font list shows the installed fonts of a
+  short list; the first entry is the app font).
 
 The title bar's connection name is a command bar: click it, or press **Ctrl+K**, to jump to a table, a tab or an action.
 A thin line in the environment's colour along the top of the workspace shows which environment you are in.
 
 ## Where TableGrip keeps its data
-`%APPDATA%\TableGrip`: `connections.json`, `settings.json`, `history.json`, `favorites.json`, `known_hosts.json`,
-`window.json` and `secrets.json` (encrypted). Delete the folder to start from scratch. Set the `TABLEGRIP_DATA_DIR`
+`%APPDATA%\TableGrip`: `connections.json`, `settings.json` (with the hash of the TableGrip password, if you set one),
+`history.json`, `favorites.json`, `known_hosts.json`, `window.json`, the `themes` folder (your theme files) and
+`secrets.json` (encrypted). Delete the folder to start from scratch. Set the `TABLEGRIP_DATA_DIR`
 environment variable to use another folder (useful for a second, separate profile).

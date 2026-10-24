@@ -3,6 +3,40 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [1.13.0] - 2026-10-24
+
+### Added
+- **Safe mode levels like TablePlus.** Each connection is now **Silent**, **Warn**, **Verify** or **Read-only**. Warn is the old
+  *Confirm changes*. **Verify** asks first like Warn and then checks it is you: **Windows Hello** (face, fingerprint, PIN or the
+  Windows password) or, where Hello is not set up, your **TableGrip password**; if neither exists the connection name is asked
+  for instead. It covers running statements, saving row edits (also in a query result), applying a structure change, restoring a
+  backup and applying migrations.
+- **A TableGrip password and an app lock.** **Preferences > Safety** can set a password (kept only as a salted PBKDF2 hash) and
+  **lock TableGrip when it starts**: Windows Hello or the password is asked for before any window with your connections opens.
+  Turning the lock on first asks you to unlock once, and TableGrip opens unlocked rather than lock you out when nothing is left
+  to unlock with.
+- **Vim mode** in the SQL editor (Preferences > Editor). Normal, insert, visual and visual-line modes with a mode badge and a
+  block caret; counts; the motions `h j k l w W b B e E 0 ^ $ gg G f F t T ; , % { }`; the operators `d c y > <` and `gu gU g~`
+  with motions and the text objects `iw aw i" a" i' a' i( a( i{ a{ i[ a[ i< a<`; `x X D C s S Y r J ~ p P u Ctrl+R .`
+  and `i a I A o O`; `v` and `V` selections. Yanks also go to the Windows clipboard. A whole insert is one undo step, and `.`
+  repeats a change with the text you typed. Ctrl shortcuts Vim does not use (Ctrl+Enter, Ctrl+S, Ctrl+C...) keep working.
+- **Several carets** in the SQL editor: **Ctrl+D** adds the next match of the selected text, **Ctrl+Shift+L** selects every match,
+  **Ctrl+Alt+Up / Down** adds a caret above or below, **Ctrl+Alt+click** adds one where you click. Typing, Backspace, Delete,
+  Enter, Tab, the arrows, Home / End, copy, cut and paste act at every caret as one undo step; Esc goes back to one caret.
+- **Custom themes.** **Preferences > Appearance > Theme file** applies a `.json` theme over the light or dark colours, including
+  the SQL syntax colours. *Export the theme in use...* writes every colour as a starting point, *Import...* checks a file and
+  copies it into the `themes` folder, and a theme edited by hand is read again when it is chosen.
+- **A font for the data grid** (Preferences > Data grid), next to the existing size.
+
+### Fixed
+- The **editor font, editor font size and grid font size** in Preferences did nothing since 1.0.0 (the glass look replaced the
+  service that applied them). They apply again, and immediately.
+
+### Changed
+- Safe mode names in the connection form: *Off* is now *Silent* and *Confirm changes* is *Warn (ask before changes)*; saved
+  connections keep their setting.
+- TableGrip is built against the Windows 10 (19041) SDK so it can use Windows Hello; the installer and the update feed are unchanged.
+
 ## [1.12.1] - 2026-10-22
 
 ### Added
