@@ -162,6 +162,23 @@ which TableGrip does not speak; connecting to it says so.
   "update" for existing rows, because no row is unique). Administration shows the running queries, the server status (version, uptime,
   memory, parts on disk), the databases, the replicas and the users; users are not created or dropped from here.
 
+### libSQL and Turso
+libSQL is SQLite served over HTTP (Turso hosts it; `sqld` is the server you run yourself). Pick **libSQL / Turso** in the new-connection picker.
+- **Host** is the address of the database: `libsql://my-db-org.turso.io` (also `https://...`, `wss://...`, or `http://127.0.0.1:8080` for a
+  server of your own). Put the **auth token** (`turso db tokens create my-db`) in **Password**; User and Database are not used. *SSL mode*
+  `Disabled` makes an address without a scheme plain `http`; otherwise it is `https`.
+- **It is SQLite.** The tables, views, columns, keys, indexes, foreign keys, checks and the `CREATE` statements are read the way they are
+  from a SQLite file, and the designer, editing, filters, import, export and the SQL editor work as they do for SQLite (the same SQL, the
+  same types). A *file* made by libSQL, or a local replica, is just a SQLite file: open it as one.
+- **Editing** is saved in one transaction held on the server across two requests (the statements, then COMMIT or ROLLBACK), so a row changed by
+  somebody else, or a statement that fails, undoes the whole commit. A **script** (several statements, with BEGIN and COMMIT of your own) runs
+  on one stream, so the transaction you open stays open for the next statement. Idle streams are closed by the server after a few seconds.
+- **Limits.** Each request carries the whole answer, so open big tables with the paging of the grid (a `SELECT *` of millions of rows in a query
+  tab is read in full). `VACUUM`, `ATTACH` and the file-size statistics are the server's business and may be refused. The server's own tables
+  (`libsql_*`) are hidden. A *Read-only* connection refuses everything but reads; a read-only token on Turso refuses writes on its side too.
+  Users, `CREATE DATABASE` and backup of a file do not apply.
+> This was tested against a stand-in of the server (the Hrana protocol over HTTP in front of a real SQLite), not yet against Turso itself.
+
 ### CockroachDB and TimescaleDB
 Both are chosen in the same picker as the other engines and use the PostgreSQL driver, so tables, views, indexes, foreign keys,
 editing, import, export, the designer and TLS work as they do for PostgreSQL. A connection URL can start with `cockroachdb://`

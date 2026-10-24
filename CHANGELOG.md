@@ -3,6 +3,28 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.5.0] - 2026-10-24
+
+### Added
+- **libSQL and Turso** (the rest of phase J2). Pick **libSQL / Turso** in the new-connection picker, give the address of the database
+  (`libsql://my-db-org.turso.io`, `https://...`, or `http://127.0.0.1:8080` for a server of your own) and put the auth token in the password
+  box. libSQL is SQLite served over HTTP, so everything that works on a SQLite file works on it: the sidebar, the structure view (columns, keys,
+  indexes, foreign keys, checks, the `CREATE` statements), the designer, editing, filters, import, export and the SQL editor.
+  - Edits are saved in one transaction held on the server (the statements, then COMMIT or ROLLBACK), so a row that changed since it was read, or a
+    statement that fails, undoes the whole commit. A script with its own BEGIN and COMMIT runs on one stream, so the transaction stays open
+    between its statements.
+  - A *Read-only* connection refuses everything but reads. Users, `CREATE DATABASE` and the tables the server keeps for itself do not show.
+  - **Not yet run against Turso itself.** It was tested against a stand-in of the server (the Hrana protocol over HTTP in front of a real
+    SQLite, 26 tests); `sqld` has no Windows build and a Turso account was not available. Please report anything that differs.
+
+### Changed
+- The part of the SQLite provider that reads the structure of a database now lives in one place and is used by both SQLite and libSQL.
+
+### Fixed
+- Pasting a full address (`mongodb://...`, `mongodb+srv://...`, `https://...`, `libsql://...`) into the host box of a MongoDB, ClickHouse or libSQL
+  connection no longer shows "not an engine TableGrip can connect to": those providers read the address themselves. (The MongoDB guide of 2.3.0
+  said this worked; the form refused it.)
+
 ## [2.4.0] - 2026-10-24
 
 ### Added
