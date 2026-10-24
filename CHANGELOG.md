@@ -3,6 +3,19 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.10.0] - 2026-10-24
+
+### Added
+- **Greenplum** (7 and later) in the database picker. It opens through the PostgreSQL driver, so tables, views, editing, import, export, the designer and
+  administration work as they do for PostgreSQL. A table's **distribution policy** (`DISTRIBUTED BY (...)`, randomly or replicated) is listed in its
+  structure view; the designer refuses foreign keys, which Greenplum does not have; `greenplum://` and `gpdb://` connection URLs are understood. A Greenplum
+  older than 7 is refused with a message that says what is needed.
+- **Not yet run against a real Greenplum** (there is none for Windows): the connection and the catalog reading were checked on a PostgreSQL that has the same
+  catalogs, with a stand-in for `gp_distribution_policy`.
+- A roadmap of the engines to come is in the README.
+
+### Changed
+- The README lost the feature checklist and the parity plan, and gained the engine roadmap.
 ## [2.9.0] - 2026-10-24
 
 ### Added

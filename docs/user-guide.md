@@ -228,6 +228,19 @@ public endpoint and a security group that lets your address in). A `redshift://u
   (cancel with `CANCEL`, end with `pg_terminate_backend`), the status and the users; locks, replication, plans (`EXPLAIN` is text) and functions are not offered.
   A *Read-only* connection sends only statements that read, because Redshift cannot be told to open a session read-only.
 
+### Greenplum
+Pick **Greenplum**: the master host as *Host*, port **5432** (or the one your cluster uses), the user (`gpadmin` is the usual one), the password
+and the database. It uses the PostgreSQL driver, so tables, views, editing, import, export, the designer, administration and TLS work as they do for
+PostgreSQL. A connection URL can start with `greenplum://` or `gpdb://`.
+
+> **Not yet run against a real Greenplum.** There is no Greenplum for Windows, so the connection was checked on a PostgreSQL that has the same catalogs (all
+> but Greenplum's own `gp_distribution_policy`, which the test makes itself). Tell us what the real thing does differently.
+
+- **Greenplum 7 or later.** It is built on PostgreSQL 12. An older Greenplum (6 is built on PostgreSQL 9.4) is refused with a message that says so, because the
+  catalogs TableGrip reads start with PostgreSQL 12.
+- **How a table is spread over the segments** is a row among the table's indexes in the structure view: `DISTRIBUTED BY (columns)`, randomly, or replicated.
+- **What the designer refuses.** Greenplum has no foreign keys, so the designer says so instead of writing one. A primary key or a unique constraint must
+  contain the distribution key; Greenplum's own message says so when it does not.
 ### CockroachDB and TimescaleDB
 Both are chosen in the same picker as the other engines and use the PostgreSQL driver, so tables, views, indexes, foreign keys,
 editing, import, export, the designer and TLS work as they do for PostgreSQL. A connection URL can start with `cockroachdb://`
