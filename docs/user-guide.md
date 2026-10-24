@@ -260,6 +260,10 @@ refuses to connect and tells you why.
 | Verify CA | Also check that the certificate comes from the CA you give (or a trusted one). |
 | Verify identity | Also check that the certificate matches the host name you typed. |
 
+Redis, MongoDB and ClickHouse use encryption only when the mode is **Required** or stricter (Preferred stays plain for them), so their
+password and data cross the network as text. **Test connection** (the connection check) warns about this for any server but this
+computer, unless the connection goes through SSH or the address is `https://`, `mongodb+srv://` or `rediss://`.
+
 Through an SSH tunnel the host name is `127.0.0.1`, so use *Verify CA* there.
 
 ### Tag
@@ -594,7 +598,8 @@ Both are in the workspace menu (the button beside the sidebar) and in the comman
 - **Change log** lists what was committed on this connection (tick *All connections* for every one): table edits you
   committed, statements run from a query tab that change data or structure, and CSV imports, each with the time and the
   SQL as it ran, values included. Search it, copy the SQL of an entry, or clear it. The file (`audit.json` in your data
-  folder) stays on this computer; passwords typed into a statement are masked.
+  folder) stays on this computer; passwords typed into a statement are masked (`IDENTIFIED BY`, `PASSWORD`, Redis `AUTH` and `CONFIG SET requirepass`,
+  `ACL SETUSER ... >password`, MongoDB `pwd:` and `changeUserPassword`, Oracle `IDENTIFIED BY word REPLACE word`).
 - **Connection health** times a few do-nothing statements and shows the typical round trip with a rating, plus the server
   version, TLS and (MySQL, MariaDB, PostgreSQL, SQL Server) uptime. A slow round trip means the network, VPN or tunnel is
   slow; if it is fast, a slow query is slow inside the server. It changes nothing.
@@ -722,7 +727,8 @@ and group, and keeps your own id, your password choice and when you last opened 
 are left alone.
 
 The file has **no password and no SSH secret**; a connection that had a stored password asks each person for their own the
-first time. Database file (SQLite) connections are not published, since a path on one computer means nothing on another.
+first time. A password pasted into the host box with an address (`mongodb://user:secret@host`) is taken out of the shared host too. Database file
+(SQLite) connections are not published, since a path on one computer means nothing on another.
 
 ## Keyboard
 

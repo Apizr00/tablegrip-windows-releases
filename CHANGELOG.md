@@ -3,6 +3,33 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.7.3] - 2026-10-24
+
+A review of where secrets could leak in the engines added in 2.2.0 to 2.7.2, size tests for them, and a repeatable screen check.
+
+### Security
+- **Shared connection files no longer carry a password that was pasted into the host box** (`mongodb://user:secret@host`); the password
+  is taken out of the host when the file is written.
+- **The query history and the change log mask more kinds of password:** Redis `AUTH`, `CONFIG SET requirepass` and `masterauth`,
+  `HELLO ... AUTH` and `ACL SETUSER ... >password`; MongoDB `pwd:` and `password:` documents, `changeUserPassword(...)` and
+  `auth(...)`; Oracle `IDENTIFIED BY word` without quotes, `IDENTIFIED BY VALUES '...'` and the old password of `REPLACE`.
+- **Error messages hide the password of an address** (`mongodb://user:***@host`), not only `Password=...` pairs.
+- **The connection check shows no password** of a pasted address in the names of its steps, and resolves the real host name of an
+  address (and its port) instead of the whole text.
+- **Warning for plain connections.** Redis, MongoDB and ClickHouse use encryption only from SSL mode *Required* up; the connection
+  check now says so when the password and the data would cross the network as text to another machine (not for this computer, SSH or
+  an `https://` address).
+
+### Changed
+- The Redis keyspace is cut at exactly its limit of 200,000 keys (it could read up to one page more).
+- Oracle: a CLOB or BLOB that the driver returns as a locator is read whole instead of showing the type name.
+
+### Added
+- Size tests: 200,000 rows through the ClickHouse and libSQL clients, a 120,000-document MongoDB collection and a 250,000-key Redis
+  keyspace (the last two need the live servers).
+- `scripts/ui-smoke.ps1` opens the built app on a sample database and checks the main screens through UI Automation, including that no
+  "Review changes" window shows over a plain result.
+
 ## [2.7.2] - 2026-10-24
 
 ### Fixed
