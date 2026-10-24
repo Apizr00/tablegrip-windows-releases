@@ -3,6 +3,13 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.19.0] - 2026-10-24
+
+### Added
+- **F6 / Shift+F6** move the keyboard focus between the sidebar, the tab strip and the open tab (on the start screen, between the search box and the list of connections).
+- A **focus ring** on the rows of the sidebar and the connection list and on the tabs, shown only when focus arrives from the keyboard.
+- **Screen-reader names** for icon-only buttons, taken from their tooltips (without the shortcut in brackets); errors and the result summary are announced when they appear.
+- **Readability check for custom themes**: importing a theme lists the colour pairs (text on window, muted text, the NULL marker, the accent) that are hard to read.
 ## [2.18.0] - 2026-10-24
 
 ### Added

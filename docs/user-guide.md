@@ -899,6 +899,7 @@ the SQL editor and the grid (Ctrl+Enter, Ctrl+Z, copy and paste, ...) are fixed.
 | Ctrl+T / Ctrl+W | New query tab / close tab |
 | Ctrl+Shift+N | New window |
 | Ctrl+Tab, Ctrl+Shift+Tab | Next / previous tab |
+| F6, Shift+F6 | Move the keyboard focus between the sidebar, the tab strip and the open tab (on the start screen: between the search box and the list) |
 | F5 | Refresh |
 | Ctrl+Shift+D | Switch database |
 | Ctrl+S | Commit the staged edits of a table; in a query, save the SQL file |
@@ -914,6 +915,14 @@ the SQL editor and the grid (Ctrl+Enter, Ctrl+Z, copy and paste, ...) are fixed.
 | Ctrl+V / Ctrl+Alt+V | Paste as one value / paste rows and columns |
 | Tab / Shift+Tab | Move between controls; every button is reachable |
 
+### Using TableGrip with the keyboard and a screen reader
+- **Everything has a keyboard way in.** F6 / Shift+F6 jump between the sidebar, the tabs and the open tab; arrow keys move in the lists and tabs, Enter opens, the Menu key (or Shift+F10) opens the context menu. An accent-coloured **focus ring** shows
+  where you are in the sidebar, the tab strip and the connection list when you arrive by keyboard (it does not appear after a mouse click).
+- **Screen readers** are given a name for every icon-only button (taken from its tooltip, without the shortcut), and hear errors ("The query failed", "Couldn't load this table") and the result summary when they appear.
+- **Reduced motion.** When Windows is set to show no animations (Settings > Accessibility > Visual effects), the loading placeholders, the drag-to-reorder slide and the dialog transitions stay still.
+- **Windows contrast themes** turn the glass transparency off automatically, so text keeps its contrast.
+- **Custom themes** are checked when you import them: if a text colour has too little contrast against the surface it is drawn on (below 4.5:1 for text, 3:1 for the NULL marker and the focus colour), the import message lists the pairs so you can fix the file.
+  The built-in themes are checked by the test suite.
 ## Updates
 Updates are checked when TableGrip starts (you can turn that off in Preferences).
 - **When a new version exists** TableGrip opens a window like other desktop apps: *A new version of TableGrip is
