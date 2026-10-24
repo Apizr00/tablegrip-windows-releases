@@ -3,6 +3,24 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.9.0] - 2026-10-24
+
+### Added
+- **Drag several saved queries at once.** Select them (Ctrl+click or Shift+click), then drag any one of the selected: they gather under the pointer and land together. Pressing one of several selected rows and letting go without moving still selects just that row.
+- **Saved queries can be dragged into an order of your own** (when the list is not split into folders and not filtered); new queries
+  go after the ones you placed.
+- **The order of the columns of a table is remembered.** Drag a column header and the order stays through sorting, filtering,
+  paging, reloading and closing the app; *Reset column order* (in the menu of a column header or of the grid) goes back to the table's own order. Query
+  results keep the order while the tab is open.
+
+### Fixed
+- **A tab (or a row, or a saved query) could not be dragged to the first place** when it was wider than the one that was first: the
+  move now follows the edge of the held item, not its middle, so dragging right to left reaches the very first place.
+
+### Removed
+- **Tables in the sidebar can no longer be dragged**; they stay sorted A to Z (with the pinned ones on top). The order file of 2.8.0
+  (`table-order.json`) is simply no longer read.
+
 ## [2.8.0] - 2026-10-24
 
 ### Added

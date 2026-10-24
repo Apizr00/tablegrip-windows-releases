@@ -737,13 +737,13 @@ the others slide out of the way (or a line shows where it will land), and on rel
 dragging puts everything back. Near the edge of a long list, the list scrolls.
 
 - **Tabs** along the top: drag a tab to a new place.
-- **Tables and views** in the sidebar: drag one within its section (Tables, Views, Pinned). The order is remembered for that
-  connection; **Alt+Up** and **Alt+Down** move the selected table one place from the keyboard, and *Sort A to Z again* in the
-  table menu forgets your order. While a filter is typed the list cannot be dragged, since the order of a few matches means little.
 - **Columns** in the structure editor and the designer: hold the grip at the left of a row (or press Alt+Up / Alt+Down in the row).
 - **Connections and groups** on the home page: see *Groups and order* above; the held row follows the pointer and a line (or
   a lit group header) shows where it goes.
-- **Result columns**: drag a column header sideways, as before.
+- **Several at once**: select saved queries with Ctrl+click or Shift+click, then drag any one of them; they travel together and land together.
+- **Saved queries**: drag them into an order of your own (not while they are split into folders or filtered).
+- **Result columns**: drag a column header sideways. The order is remembered for the table (also after you close TableGrip) and
+  survives sorting, filtering and paging; *Reset column order* (right-click a column header, or right-click in the grid) undoes it.
 
 ## Keyboard
 

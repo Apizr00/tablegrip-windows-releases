@@ -18,7 +18,7 @@ written.
 
 Supports **SQLite**, **MySQL**, **MariaDB**, **PostgreSQL**, **CockroachDB**, **TimescaleDB**, **DuckDB**, **Redis**, **MongoDB**, **ClickHouse**, **libSQL / Turso**, **Oracle**, **Amazon Redshift**, **SQL Server**
 
-> **Status:** version 2.8.0. All planned features are in. The installers are not code-signed yet, so Windows
+> **Status:** version 2.9.0. All planned features are in. The installers are not code-signed yet, so Windows
 > SmartScreen may warn the first time you run one. SQL Server support is
 > implemented and unit-tested but has not been run against a live server yet.
 
