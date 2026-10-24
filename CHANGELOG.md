@@ -3,6 +3,25 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.0] - 2026-10-24
+
+### Added
+- **CockroachDB and TimescaleDB** (phase J1). Both are in the new-connection picker and use the PostgreSQL driver: browsing,
+  editing, import and export, the table designer, SSH and the TLS modes work as for PostgreSQL, and connection URLs may start
+  with `cockroachdb://` or `timescaledb://`.
+  - **TimescaleDB** is PostgreSQL itself. Its internal schemas (`_timescaledb_*`, `timescaledb_*`) are hidden from the sidebar.
+  - **CockroachDB** opens on port 26257 and suggests the database `defaultdb`. It has no PostgreSQL monitoring views, so the
+    sessions, locks, status, replication, users, table size and Explain pages say that the engine does not offer them
+    instead of failing, and *Update statistics* (`ANALYZE`) is its only maintenance command. A cloned table keeps its
+    numbers with a plain `INSERT`, since CockroachDB has no `OVERRIDING SYSTEM VALUE`.
+  - Neither engine was run against a live server (none is available on the development machine); they are covered by
+    tests of the statements and of the engine choice. Please report what a real cluster refuses.
+
+### Changed
+- The version is 2.0.0 because phase J (more engines) starts here; nothing that worked before changed.
+- Amazon Redshift, the third engine of J1, is not included: its catalogs are those of PostgreSQL 8.0 and need their own
+  queries, which cannot be checked without a Redshift cluster.
+
 ## [1.13.0] - 2026-10-24
 
 ### Added

@@ -30,6 +30,18 @@
    it most likely means and what to try, and the steps after it are marked as skipped. *Copy report* puts the result on the
    clipboard for a bug report. Recently opened tables come first in the command palette (Ctrl+K, Ctrl+P).
 
+### CockroachDB and TimescaleDB
+Both are chosen in the same picker as the other engines and use the PostgreSQL driver, so tables, views, indexes, foreign keys,
+editing, import, export, the designer and TLS work as they do for PostgreSQL. A connection URL can start with `cockroachdb://`
+or `timescaledb://`.
+- **TimescaleDB** is PostgreSQL with an extension, so everything PostgreSQL offers works. Its own schemas (`_timescaledb_*`,
+  `timescaledb_*`) are hidden from the sidebar; hypertables are listed as the tables they look like.
+- **CockroachDB** defaults to port **26257** and the database `defaultdb`, and a secure cluster needs the TLS mode set
+  (*Required* or one of the *Verify* modes, with the CA file). CockroachDB has no PostgreSQL server-monitoring views, so
+  *Sessions*, *Locks*, *Server status*, *Replication*, *Users*, the size of a table and **Explain** report that the engine does not
+  offer them, and the only maintenance command is *Update statistics* (`ANALYZE`). These two engines were built against the
+  PostgreSQL catalogs and tested without a running server, so please report anything that a real cluster refuses.
+
 ### Passwords
 - *Store securely* encrypts the password for your Windows account. It is never written to `connections.json`.
 - *Ask every time* asks when you connect and keeps it in memory only.
