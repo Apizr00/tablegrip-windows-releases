@@ -3,6 +3,18 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.17.0] - 2026-10-24
+
+### Added
+- **DynamoDB** in the database picker, reached with its JSON API (requests are signed here with AWS Signature Version 4, so no AWS package is added): the **region** or a DynamoDB Local address in *Host*, the access key id as *User* and the secret access key as *Password*
+  (a session token goes after the region: `?token=`). Tables are shown as tables and items as rows: the partition key and the sort key first, then the attributes found in a sample of items; maps, lists and sets are shown and edited as JSON.
+- Browsing, paging and the filter bar work: a condition on the key is answered by DynamoDB, anything else is evaluated on the first 50,000 items (**a scan is charged by AWS**). PartiQL of your own (`begins_with`, `contains`) runs as typed in a query tab.
+- **Editing** reads the items first (so a missing item is reported) and saves all the changes as one `ExecuteTransaction` (all or nothing, 100 statements at a time). The key of an item cannot be changed.
+- **Not yet run against a real AWS account**: the signing matches the example AWS publishes, and the rest was tested against a stand-in.
+- Not offered yet: the designer, schema comparison, importing over existing items, and emptying or renaming a table (DynamoDB cannot).
+
+### Changed
+- This completes the engine roadmap in the README.
 ## [2.16.0] - 2026-10-24
 
 ### Added

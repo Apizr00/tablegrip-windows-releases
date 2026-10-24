@@ -228,6 +228,23 @@ public endpoint and a security group that lets your address in). A `redshift://u
   (cancel with `CANCEL`, end with `pg_terminate_backend`), the status and the users; locks, replication, plans (`EXPLAIN` is text) and functions are not offered.
   A *Read-only* connection sends only statements that read, because Redshift cannot be told to open a session read-only.
 
+### DynamoDB
+Pick **DynamoDB**: *Host* is the **region** (`eu-west-1`), or the address of DynamoDB Local (`http://localhost:8000`); *User* is the **access key id** and *Password* the **secret access key** of an IAM user that may use DynamoDB
+(DynamoDB Local takes any). Temporary credentials add their session token to Host: `eu-west-1?token=...`. *Database* is not used: a region has tables, not databases. Requests are signed here with AWS Signature Version 4; no AWS software is installed.
+
+> **Not yet run against a real AWS account.** The signing is checked against the example AWS publishes, and the calls and statements were tested against a stand-in that answers from memory. Tell us what DynamoDB does differently.
+
+- **What you see.** The tables of the region; the columns are the **partition key** and the **sort key** (marked as the key), then the attributes found in the first 100 items of the table, as DynamoDB has no fixed columns.
+  A map, a list or a set is shown as JSON and edited as JSON. Items may have attributes the grid does not show; open a query tab for those.
+- **Reading is not like SQL, and a scan is charged.** A condition that names the partition key (and the sort key too) is sent to DynamoDB as a `WHERE` on the key and reads only that partition. A page with no condition reads the table from its start,
+  as far as the page. **Anything else** (a search, a filter on another attribute, a sort) is evaluated here on the first 50,000 items, and **reading them costs read capacity**; a bigger table asks for the key. The row count is the item count
+  DynamoDB keeps (updated about every six hours). For PartiQL of your own (`begins_with`, `contains`, `EXISTS`) use a query tab: what TableGrip does not read as its own simple SQL is sent as it is.
+- **Editing.** TableGrip reads the items an `UPDATE` or `DELETE` addresses first (so it can tell you when an item is not there) and sends all the changes as **one transaction** (`ExecuteTransaction`: all or nothing, up to 100 statements; a longer commit is sent in several and the message says how many were saved).
+  An `INSERT` fails when the key exists already. **A key attribute cannot be changed**: delete the item and write it again. Transactions are charged double.
+- **Import** adds items (it fails on an existing key); skipping or updating separately is not offered.
+- **Dropping a table** deletes it. DynamoDB cannot empty or rename a table.
+- **Not offered yet.** The table designer, schema comparison and users (IAM does that), and streams, TTL and capacity settings; the table's key schema and indexes are shown in its details.
+- A *Read-only* connection sends only statements that read. A plain `http://` endpoint other than localhost sends the keys' signatures in the clear and is warned about.
 ### Cassandra
 Pick **Cassandra** (Scylla and Astra answer the same protocol): *Host* is a node, or several separated by commas, *Port* is 9042, and *User* and *Password* sign in when the cluster asks for a login (leave them empty when it does not).
 *Database* is the **keyspace** to open: a connection shows one keyspace, and its tables and materialized views. SSL mode *Required* or stricter turns TLS on (*Verify* also checks the certificate).
