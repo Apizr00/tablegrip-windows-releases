@@ -3,6 +3,17 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.15.0] - 2026-10-24
+
+### Added
+- **BigQuery** in the database picker, through Google's REST API (no Google package, which would have added many assemblies): the project id in *Host*, a dataset (or `project.dataset`) in *Database*, and the sign-in with a
+  **service account key** (the JSON file in *Key*) or an access token (in *Password*). Datasets are schemas; tables and views, columns with their standard SQL types (a record or an array is shown as JSON), declared keys,
+  partitioning, clustering and the `CREATE` statement are shown; editing a table with a primary key is one scripted transaction with row-count checks.
+- **Browsing a table costs nothing**: pages of rows are read with BigQuery's free table-data call and the row count of a table from its description; a filter, a sort or a statement is a billed query. `?max_gb=10` after the
+  project makes BigQuery refuse a query that would read more.
+- **Not yet run against a real project**: tested against a stand-in that answers in Google's documented shape, with the signed token request checked against the public key.
+- Not offered yet: the table designer, schema comparison and importing over existing rows.
+- The columns of type `BYTES` and `STRUCT<...>` are recognised in the grid editor.
 ## [2.14.0] - 2026-10-24
 
 ### Added

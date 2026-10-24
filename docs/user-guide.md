@@ -228,6 +228,25 @@ public endpoint and a security group that lets your address in). A `redshift://u
   (cancel with `CANCEL`, end with `pg_terminate_backend`), the status and the users; locks, replication, plans (`EXPLAIN` is text) and functions are not offered.
   A *Read-only* connection sends only statements that read, because Redshift cannot be told to open a session read-only.
 
+### BigQuery
+Pick **BigQuery**. *Host* is the **project id** (`my-project-123456`): the project that runs and is billed for the queries. *Database* is empty to show every dataset of the project, a dataset (`shop`) to show just that one, or
+`project.dataset` for a dataset of another project, such as `bigquery-public-data.samples`. Sign in with either:
+- **A service account (recommended).** Make one in IAM > Service accounts, give it the roles **BigQuery Job User** (to run queries) and **BigQuery Data Viewer** (to read) or **Data Editor** (to change), create a JSON key for it,
+  and choose that file in the *Key* box. TableGrip signs a request with the key and Google answers with an access token, renewed before it runs out. The key file stays where it is; only its path is kept.
+- **An access token.** `gcloud auth print-access-token` prints one (good for an hour); leave *Key* empty and put it in *Password*.
+
+After the project in Host you can add `?max_gb=10` to make BigQuery refuse any query that would read more than 10 GB, and `&location=EU` for a dataset outside the US.
+
+> **Not yet run against a real BigQuery project.** It was written from Google's REST documentation and tested against a stand-in that answers in the documented shape (the signing of the token request is checked with the public key).
+
+- **Cost.** BigQuery bills a query by the bytes it reads, and `LIMIT` does not reduce that. So TableGrip does **not** run a query to show a table: the pages of rows are read with the free table-data call, and the row count of a whole
+  table comes from the table's own description. A **filter, a sort, a search, the structure's column analysis, and any statement you run** are queries and are billed. Use `?max_gb=` to protect yourself.
+- **What you see.** Datasets as schemas, tables and views, columns with their types (`INT64`, `NUMERIC(10, 2)`, `ARRAY<STRING>`, `STRUCT<...>`; a record or an array is shown as its JSON), descriptions, the primary and foreign keys
+  that were declared (BigQuery does not enforce them), the partitioning and clustering, and the `CREATE` statement. A table written `` `project`.`dataset`.`table` `` in your queries is the same table.
+- **Editing.** Works for tables with a declared primary key: a commit is one script that begins a transaction, runs the statements, compares each row count with what was expected and rolls back when it differs or a statement fails.
+  BigQuery allows only a limited number of data changes per table per day.
+- **Not offered yet.** The table designer, schema comparison, importing over existing rows (BigQuery cannot tell which exist), and users and rights (IAM does that).
+- A *Read-only* connection sends only statements that read.
 ### Vertica
 Pick **Vertica**: the host of any node, port **5433**, the user (`dbadmin` is the usual one), the password and the **database** name. SSL mode *Required* or stricter turns TLS on (the driver does not
 check the certificate). TableGrip uses Vertica's own ADO.NET driver, so nothing has to be installed. By using it you also agree to Vertica's
