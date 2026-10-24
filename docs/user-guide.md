@@ -129,6 +129,39 @@ the database of the connection; if yours lives somewhere else, name it with `?au
   operations running now (kill works), the server status, the databases and the replica set members. Sharding tools, change
   streams, GridFS, time-series options and client-side field encryption are not covered.
 
+### ClickHouse
+Pick **ClickHouse** in the new-connection picker: host, port **8123** (the HTTP interface; 8443 when TLS is on), the user
+(empty is `default`) and password, and the **database** (empty is `default`). TLS is used when the mode is *Required* or stricter.
+You can also write a full address in *Host* (`https://host:8443`). Port 9000, the one of `clickhouse-client`, is the native protocol,
+which TableGrip does not speak; connecting to it says so.
+> **Not yet run against a real server.** There is no ClickHouse build for Windows, so this support was written against the documented
+> HTTP interface and tested with a stand-in server that answers the way ClickHouse does. If something differs on your server, please
+> report it on the issues page (Help menu) with the message you see.
+- **What you see.** The tables and views of the database (the hidden `.inner` tables of materialized views are left out); the
+  structure view shows the columns with their ClickHouse types (`Nullable(...)`, `LowCardinality(...)`, `Array(...)` are shown as the
+  server writes them), defaults (`DEFAULT`, `MATERIALIZED`, `ALIAS`), comments, the primary key and the sorting key, data skipping
+  indexes, the engine, rows, size and partition key, and the `CREATE TABLE` statement. A column of a key is marked as key, but the key of
+  a ClickHouse table is **not unique**. Numbers, decimals, dates, UUIDs and booleans arrive as such; arrays, tuples, maps and JSON show
+  as the text ClickHouse prints. **Database > Switch database...** lists the databases of the server.
+- **Reading** is streamed, so a big result does not wait for the whole answer. A statement with its own `FORMAT` (`SELECT ... FORMAT JSON`)
+  comes back as lines of text. Cancelling a query closes the request and asks the server to `KILL QUERY` it.
+- **Editing.** ClickHouse is built for appending, not for changing single rows, so the grid works with it like this: **new rows** are
+  inserted; **a change or a delete** is sent as a *mutation* (`ALTER TABLE ... UPDATE` / `DELETE`, which TableGrip waits for with
+  `mutations_sync = 2`). Before anything is sent, each change is counted (`SELECT count() ... WHERE`): if the row is no longer what the
+  grid showed, or the key matches more than one row (a key is not unique), nothing is saved and you are told. There are **no
+  transactions**: when a commit has several statements and one fails, the ones before it stay, and the message says how many. You cannot
+  update a column of the sorting key (ClickHouse refuses). An `UPDATE` or `DELETE` typed in a query tab is turned into the same mutations,
+  and a `DELETE` without a condition deletes every row.
+- **Search** works as in other tables; *contains* is case-insensitive and also finds numbers (the value is read as text).
+- **Changing a table.** The designer writes `CREATE TABLE ... ENGINE = MergeTree ORDER BY (the key columns)` (`ORDER BY tuple()` with no
+  key), `ADD / DROP / RENAME / MODIFY COLUMN`, data skipping indexes (type `minmax`) and `RENAME TABLE`. The type is written as ClickHouse
+  names it (`Int32`, `String`, `DateTime`); the *Nullable* box wraps it in `Nullable(...)`. The key (ORDER BY) of an existing table cannot be
+  changed, and there are no foreign keys, unique indexes or auto-numbered columns; the designer says so. Other table engines are made
+  with SQL.
+- **Other tools.** *Optimize table* runs `OPTIMIZE TABLE ... FINAL` and *Check* runs `CHECK TABLE`. Import adds rows (there is no "skip" or
+  "update" for existing rows, because no row is unique). Administration shows the running queries, the server status (version, uptime,
+  memory, parts on disk), the databases, the replicas and the users; users are not created or dropped from here.
+
 ### CockroachDB and TimescaleDB
 Both are chosen in the same picker as the other engines and use the PostgreSQL driver, so tables, views, indexes, foreign keys,
 editing, import, export, the designer and TLS work as they do for PostgreSQL. A connection URL can start with `cockroachdb://`

@@ -3,6 +3,32 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.4.0] - 2026-10-24
+
+### Added
+- **ClickHouse** (phase J3). Pick ClickHouse in the new-connection picker: host, port 8123 (the HTTP interface; 8443 with TLS), user
+  (empty is `default`), password and database (empty is `default`). TableGrip talks to ClickHouse over HTTP with a small client of its
+  own, so the download does not grow.
+  - **Browse.** Tables and views of the database, the structure with the ClickHouse types as the server writes them
+    (`Nullable`, `LowCardinality`, `Array`...), defaults, comments, the primary and sorting key, data skipping indexes, the engine, rows,
+    size, partition key and the `CREATE TABLE` statement. Results are streamed in batches, numbers, decimals, dates, UUIDs and booleans
+    arrive as such, and a cancelled query is stopped on the server.
+  - **Edit, the way ClickHouse allows.** New rows are inserted; a change or a delete is sent as a mutation (`ALTER TABLE ... UPDATE` /
+    `DELETE`, waited for). Each one is counted first, so a row that is no longer what the grid showed, or a key that matches several rows
+    (a ClickHouse key is not unique), is found before anything is sent. There are no transactions: if a commit fails after its first
+    statement, the message says how many were already applied. `UPDATE` and `DELETE` typed in a query tab become the same mutations.
+  - **Designer.** `CREATE TABLE ... ENGINE = MergeTree ORDER BY (key)`, add, drop, rename and change columns, data skipping indexes,
+    rename table. No foreign keys, unique indexes or auto-numbered columns (the designer says so); the key of an existing table cannot
+    change.
+  - **Tools.** Optimize (`OPTIMIZE TABLE ... FINAL`) and check, import (rows are added), switch database, and administration: running
+    queries, server status, databases, replicas and users.
+  - **Not yet run against a real server.** ClickHouse has no Windows build, so this was written from the documentation of its HTTP
+    interface and tested against a stand-in server that answers the way ClickHouse does (90 tests). Please report anything that differs.
+
+### Changed
+- `Nullable(...)`, `LowCardinality(...)`, `Map`, `Tuple` and similar types are read as the kind of value they hold (a `Nullable(Int32)` is a
+  whole number, a `Map(String, Int32)` is text) wherever TableGrip parses what you type.
+
 ## [2.3.0] - 2026-10-24
 
 ### Added
