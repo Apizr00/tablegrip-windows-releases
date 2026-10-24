@@ -3,6 +3,21 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.7.2] - 2026-10-24
+
+### Fixed
+- **The password of a pasted address is no longer kept in the host.** Pasting `mongodb://user:secret@host/db` (or the same for ClickHouse and
+  libSQL) into the host box moves the user and the password to their own boxes (the password is stored securely); before, the whole
+  address, secret included, was saved as plain text and shown in the footer and in the list of connections. A connection saved that way
+  earlier shows its address without the password.
+- **The footer no longer ends in a colon** (`http://127.0.0.1:25158:`) when a connection has no port, and does not repeat a port that the
+  address already names.
+
+### Checked
+- libSQL: the sidebar, the structure with its indexes and the `CREATE` statements, and a table rebuild from the designer (a type change and a
+  new column) run against a stand-in server. ClickHouse: the designer writes `MODIFY COLUMN` and `ADD COLUMN`. Neither has been run against a
+  real server.
+
 ## [2.7.1] - 2026-10-24
 
 ### Fixed
