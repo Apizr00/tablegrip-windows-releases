@@ -16,9 +16,9 @@
 TableGrip lets you browse, query and edit a database in one small window, and shows every change as SQL before it is
 written.
 
-Supports **SQLite**, **MySQL**, **MariaDB**, **PostgreSQL**, **CockroachDB**, **TimescaleDB**, **DuckDB**, **Redis**, **MongoDB**, **ClickHouse**, **libSQL / Turso**, **Oracle**, **Amazon Redshift**, **Greenplum**, **Cloudflare D1**, **Snowflake**, **Elasticsearch**, **SQL Server**
+Supports **SQLite**, **MySQL**, **MariaDB**, **PostgreSQL**, **CockroachDB**, **TimescaleDB**, **DuckDB**, **Redis**, **MongoDB**, **ClickHouse**, **libSQL / Turso**, **Oracle**, **Amazon Redshift**, **Greenplum**, **Cloudflare D1**, **Snowflake**, **Elasticsearch**, **Vertica**, **SQL Server**
 
-> **Status:** version 2.13.0. All planned features are in. The installers are not code-signed yet, so Windows
+> **Status:** version 2.14.0. All planned features are in. The installers are not code-signed yet, so Windows
 > SmartScreen may warn the first time you run one. SQL Server support is
 > implemented and unit-tested but has not been run against a live server yet.
 

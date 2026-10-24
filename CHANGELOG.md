@@ -3,6 +3,14 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.14.0] - 2026-10-24
+
+### Added
+- **Vertica** in the database picker, through Vertica's own ADO.NET driver (0.5 MB; its licence, linked from the user guide and listed in the notices, allows shipping it): host, port 5433, user, password and
+  database. Schemas, tables, views, columns with their types, identity, defaults and comments, the primary key, unique and foreign keys, the **projections** of a table and its definition are shown;
+  editing is one transaction with row-count checks.
+- **Not yet run against a real Vertica**: the catalog queries come from Vertica's documentation and were tested against a connection that answers from a script.
+- Not offered yet: the table designer and structure editing, schema comparison, and importing over existing rows.
 ## [2.13.0] - 2026-10-24
 
 ### Added

@@ -228,6 +228,20 @@ public endpoint and a security group that lets your address in). A `redshift://u
   (cancel with `CANCEL`, end with `pg_terminate_backend`), the status and the users; locks, replication, plans (`EXPLAIN` is text) and functions are not offered.
   A *Read-only* connection sends only statements that read, because Redshift cannot be told to open a session read-only.
 
+### Vertica
+Pick **Vertica**: the host of any node, port **5433**, the user (`dbadmin` is the usual one), the password and the **database** name. SSL mode *Required* or stricter turns TLS on (the driver does not
+check the certificate). TableGrip uses Vertica's own ADO.NET driver, so nothing has to be installed. By using it you also agree to Vertica's
+[client driver licence](https://www.vertica.com/client-driver-eula/), which allows a program to carry the driver for connecting to Vertica; the driver is listed in `THIRD-PARTY-NOTICES.md`.
+
+> **Not yet run against a real Vertica.** The catalog queries (`v_catalog.*`) were written from Vertica's documentation and tested against a connection that answers from a script; a column a version
+> does not have makes that part of the structure (the foreign keys, say) empty instead of an error. Tell us what a real server does differently.
+
+- **What you see.** Schemas (without the system ones), tables and views; the structure shows the types as Vertica writes them, defaults, identity columns, comments, the primary key, unique constraints
+  and foreign keys (Vertica does not enforce them unless they are enabled), the **projections** of the table (how Vertica stores it) and its definition from `EXPORT_OBJECTS`.
+- **Editing.** Works as for any SQL table: a commit is one transaction, and a row changed by someone else is refused. Values go into the statements as literals.
+- **Not offered yet.** The table designer, structure editing and schema comparison (change a table with SQL in a query tab), and importing over existing rows (the import only adds, as Vertica cannot tell which exist).
+  Ending a session is done with `CLOSE_SESSION` in a query tab.
+- A *Read-only* connection sends only statements that read.
 ### Elasticsearch
 Pick **Elasticsearch** (OpenSearch answers the same API). *Host* is the node or the load balancer: `localhost`, or a whole address such as `https://my-cluster.example.com:9200` (Elastic Cloud: the endpoint
 it shows). *Port* is 9200 unless the address says another. *User* and *Password* sign in with a user of the cluster; to use an **API key** instead, leave *User* empty and put the key

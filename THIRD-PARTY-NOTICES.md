@@ -48,10 +48,12 @@ reproduced here as those licences require. TableGrip itself is licensed under th
 | SQLitePCLRaw.lib.e_sqlite3 | 2.1.12 | Apache-2.0 | Copyright 2014-2024 SourceGear, LLC |  |
 | SQLitePCLRaw.provider.e_sqlite3 | 2.1.12 | Apache-2.0 | Copyright 2014-2024 SourceGear, LLC |  |
 | SSH.NET | 2026.0.0 | MIT | Copyright © Renci 2010-2026 |  |
+| System.ComponentModel.Annotations | 5.0.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/dotnet/runtime |
 | System.DirectoryServices.Protocols | 8.0.2 | MIT | © Microsoft Corporation. All rights reserved. | https://dot.net/ |
 | System.IdentityModel.Tokens.Jwt | 8.16.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet |
 | System.Threading.RateLimiting | 9.0.18 | MIT | © Microsoft Corporation. All rights reserved. | https://dot.net/ |
 | Velopack | 1.2.158 | MIT | Copyright © Velopack Ltd. All rights reserved. | https://github.com/velopack/velopack |
+| Vertica.Data | 24.3.0 | see https://www.vertica.com/client-driver-eula/ | Copyright © 2023 OpenText Corporation | https://docs.vertica.com/latest/en/connecting-to/client-libraries/client-drivers/install-config/ado-netr/ |
 | ZstdSharp.Port | 0.7.3 | MIT | Copyright Oleg Stepanischev 2023 | https://github.com/oleg-st/ZstdSharp |
 
 The self-contained build also includes the **.NET runtime** and **Windows Presentation Foundation** (MIT License,
