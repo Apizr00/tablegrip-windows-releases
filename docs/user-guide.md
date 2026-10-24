@@ -228,6 +228,27 @@ public endpoint and a security group that lets your address in). A `redshift://u
   (cancel with `CANCEL`, end with `pg_terminate_backend`), the status and the users; locks, replication, plans (`EXPLAIN` is text) and functions are not offered.
   A *Read-only* connection sends only statements that read, because Redshift cannot be told to open a session read-only.
 
+### Elasticsearch
+Pick **Elasticsearch** (OpenSearch answers the same API). *Host* is the node or the load balancer: `localhost`, or a whole address such as `https://my-cluster.example.com:9200` (Elastic Cloud: the endpoint
+it shows). *Port* is 9200 unless the address says another. *User* and *Password* sign in with a user of the cluster; to use an **API key** instead, leave *User* empty and put the key
+(the `encoded` value Kibana shows) in *Password*. There is no database: a cluster has indices. SSL mode **Preferred** tries `https` first (Elasticsearch 8 answers there, with a certificate of its own)
+and then `http`; **Required** accepts any certificate; **Verify CA / identity** check it (give the CA file of the cluster).
+
+> **Not yet run against a real cluster.** It was written from Elasticsearch's REST documentation and tested against a stand-in node. Tell us what a real one does differently.
+
+- **What you see.** Every index (the ones that start with a dot are hidden) is a table, a document is a row. The first column is `_id`, the key of the table; the others are the fields of the
+  index's mapping, nested objects shown as `owner.address.city`, with a field that holds a list or an object the mapping does not describe shown as its JSON. The structure view shows the
+  mapping and the settings of the index as the request that makes it.
+- **Reading.** Paging, sorting and the filter bar work as for any table. Elasticsearch itself runs the paging, and the filter and the sort when its own SQL translator understands them; anything
+  it does not (a sort on a text field, a search on `_id` together with another condition) is evaluated on the first 50,000 documents of the index here, and an index larger than that asks for a simpler condition.
+  Elasticsearch pages only the first 10,000 documents with offsets; deeper than that, narrow the condition.
+- **Elasticsearch's own SQL.** A query that TableGrip does not read as its simple form (an aggregation, `GROUP BY`, `SHOW TABLES`, `DESCRIBE index`) is sent to Elasticsearch's SQL endpoint as it is, and
+  the result is read-only (up to 100,000 rows).
+- **Editing, with one difference to know:** **Elasticsearch has no transactions.** A commit is sent as one bulk request, after TableGrip has checked how many documents each change touches; each change to
+  a document carries the version it was read at, so a document someone else changed meanwhile is refused. If the bulk request fails half way, the changes that went through stay, and the message says so.
+  Setting a column to NULL writes `null`; an index with a field that is `flattened` or an object you edit as JSON text.
+- **Import** adds documents (map `_id` to choose their ids); skipping or updating existing ones is not offered. *Truncate* deletes every document of the index and *Drop* deletes the index.
+- **Not offered.** Creating or changing an index (mapping, settings, aliases), users and roles, rename. Use Kibana Dev Tools or `curl` for those.
 ### Snowflake
 Pick **Snowflake**. In the form: *Host* is the **account** (`myorg-account1`, or `xy12345.eu-west-1`; the whole `....snowflakecomputing.com` name works too) and may end in
 `?warehouse=COMPUTE_WH&role=ANALYST` to choose the warehouse and the role (the form has no boxes for them; without them the user's defaults are used),

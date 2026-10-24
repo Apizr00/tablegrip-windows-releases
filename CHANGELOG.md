@@ -3,6 +3,17 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.13.0] - 2026-10-24
+
+### Added
+- **Elasticsearch** (and OpenSearch) in the database picker, through its REST API: an index is a table and a document a row, `_id` is the key, and the fields of the mapping are the columns
+  (nested objects as `a.b`). Browsing, paging, sorting and the filter bar work (Elasticsearch runs them when its SQL translator can; otherwise the first 50,000 documents are evaluated here),
+  the structure view shows the index's mapping and settings, and a query that TableGrip does not read itself (an aggregation, `SHOW TABLES`) runs on Elasticsearch's own SQL, read-only.
+- **Editing**: a commit is one bulk request, checked first for the number of documents each change touches, with each change guarded by the version of the document it was read at (a document that
+  someone else changed is refused). Elasticsearch has **no transactions**, so a failure half way leaves the changes that went through, and the message says so. Import adds documents; truncate and drop work.
+- Sign in with a user and password, or an API key (leave the user empty). SSL mode Preferred tries https and then http. The connection check warns about a plain connection to another machine.
+- **Not yet run against a real cluster**: tested against a stand-in node.
+- Not offered: the designer (mappings and settings), users and roles.
 ## [2.12.0] - 2026-10-24
 
 ### Added
