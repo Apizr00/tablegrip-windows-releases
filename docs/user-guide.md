@@ -52,7 +52,11 @@ given on the command line; the engine follows the file. **New...** next to the f
   make a copy with *Clone table...* from a design that has them.
 - **Maintenance.** *Update statistics* (`ANALYZE`) for a table or the whole file, and *Optimize* for the whole file (`CHECKPOINT`).
   There are no users, sessions or locks to show; *Server status* shows the version, the file size, the memory in use and more.
-- Not offered yet: the Explain plan viewer, and attaching a second database file.
+- **Explain** works as for PostgreSQL: the plan of a query as a tree of operators with estimated rows, and **Analyze** for the real
+  rows and time of a read.
+- **Another file.** The sidebar shows the one file of the connection. To use a second one, attach it in a script and run the
+  script in one go, for example `ATTACH 'other.duckdb' AS other (READ_ONLY); SELECT * FROM other.sales;` (a script is run on one
+  connection, so the attached file is there for the next statement). Attached files are not listed in the sidebar.
 
 ### CockroachDB and TimescaleDB
 Both are chosen in the same picker as the other engines and use the PostgreSQL driver, so tables, views, indexes, foreign keys,
@@ -396,7 +400,8 @@ look, the page shows the server's message.
   work. Steps that deserve a look are marked: a red edge for the likely hot spot (a full scan of a big table, a step with
   half the cost, a sort or hash that spilled to disk) and an amber one for remarks (a whole index read, a temporary sort,
   an estimate ten times off). Nothing is executed. On PostgreSQL, **Analyze** runs a *read* and reports real row counts and
-  times; it is not offered for a statement that changes data. MySQL and MariaDB show the tabular plan, SQLite its query
+  times (DuckDB too); it is not offered for a statement that changes data. DuckDB shows its operators with the tables, joins and
+  filters, a scan of a big table without a filter marked as the hot spot, and with Analyze each step's real rows and time. MySQL and MariaDB show the tabular plan, SQLite its query
   plan and SQL Server the estimated showplan (with the missing indexes it suggests). *Copy plan as text* puts the plan in the
   clipboard.
 - **ER diagram.** **ER diagram...** in the workspace menu (or *Show in ER diagram...* on a table) draws the tables of the

@@ -3,6 +3,24 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.1.1] - 2026-10-24
+
+### Added
+- **Explain for DuckDB.** The **Explain** button of a query tab now works on a DuckDB connection: the plan is a tree of operators
+  with the table, join condition and filter of each step and the rows DuckDB expects, a scan of a big table with no filter is
+  marked as the hot spot, and **Analyze** (reads only) runs the query and shows each step's real rows and time.
+
+### Changed
+- **A smaller download.** The Windows 10 SDK projection that Windows Hello needs is no longer compiled ahead of time (it was
+  53 MB of the program for two calls, and is now 24 MB; it is compiled when Hello is used). The installer and the update
+  packages shrink by the same share.
+- **No build warnings.** The 23 analyzer and nullable warnings of the solution are gone (a partial method with two names for one
+  parameter, `Task` returns that could be concrete, a shared `JsonSerializerOptions`, log calls that built their arguments when
+  logging was off, a null check in the start-up code, and the test classes). Nothing changed for the person using the program.
+- **The guide says how to use a second DuckDB file**: attach it in a script (`ATTACH 'other.duckdb' AS other; SELECT ...`) and run
+  the script in one go. Attached files are not listed in the sidebar yet, because the places that name a table (diagrams, usages,
+  the designer) do not carry the file with them.
+
 ## [2.1.0] - 2026-10-24
 
 ### Added
