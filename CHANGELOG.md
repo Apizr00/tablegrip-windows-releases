@@ -3,6 +3,21 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.8.0] - 2026-10-24
+
+### Added
+- **Smoother dragging everywhere.** The row, tab or connection you hold now lifts off the list with a soft shadow and follows the
+  pointer; its neighbours slide out of the way and it settles into its place on release (Esc puts everything back, and the lists
+  scroll when you drag near their edge). Before, a tab jumped when it crossed its neighbour and a connection showed no sign of being held.
+- **Drag columns in the structure editor and the designer** by the grip at the left of each row (the up and down buttons stay),
+  and with Alt+Up / Alt+Down inside the row.
+- **Drag tables and views in the sidebar** into an order of your own, within their section. The order is kept per connection;
+  Alt+Up / Alt+Down move the selected table, and *Sort A to Z again* in the table menu goes back to the database's order.
+- Home page: connections and groups are dragged the same way (the line that shows where a connection lands is unchanged).
+
+### Changed
+- The README no longer carries the feature checklist and the parity plan (the history is in this file).
+
 ## [2.7.3] - 2026-10-24
 
 A review of where secrets could leak in the engines added in 2.2.0 to 2.7.2, size tests for them, and a repeatable screen check.

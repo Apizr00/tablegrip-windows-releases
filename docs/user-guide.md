@@ -730,6 +730,21 @@ The file has **no password and no SSH secret**; a connection that had a stored p
 first time. A password pasted into the host box with an address (`mongodb://user:secret@host`) is taken out of the shared host too. Database file
 (SQLite) connections are not published, since a path on one computer means nothing on another.
 
+## Moving things by dragging
+
+Whatever you can reorder moves the same way: press, drag, let go. The item you hold lifts off the list and follows the pointer,
+the others slide out of the way (or a line shows where it will land), and on release it settles into its place. **Esc** while
+dragging puts everything back. Near the edge of a long list, the list scrolls.
+
+- **Tabs** along the top: drag a tab to a new place.
+- **Tables and views** in the sidebar: drag one within its section (Tables, Views, Pinned). The order is remembered for that
+  connection; **Alt+Up** and **Alt+Down** move the selected table one place from the keyboard, and *Sort A to Z again* in the
+  table menu forgets your order. While a filter is typed the list cannot be dragged, since the order of a few matches means little.
+- **Columns** in the structure editor and the designer: hold the grip at the left of a row (or press Alt+Up / Alt+Down in the row).
+- **Connections and groups** on the home page: see *Groups and order* above; the held row follows the pointer and a line (or
+  a lit group header) shows where it goes.
+- **Result columns**: drag a column header sideways, as before.
+
 ## Keyboard
 
 These are the defaults. **Tools > Keyboard shortcuts...** (or the palette) changes the ones that work anywhere in the window:
