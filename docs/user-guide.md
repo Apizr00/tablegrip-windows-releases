@@ -228,6 +228,25 @@ public endpoint and a security group that lets your address in). A `redshift://u
   (cancel with `CANCEL`, end with `pg_terminate_backend`), the status and the users; locks, replication, plans (`EXPLAIN` is text) and functions are not offered.
   A *Read-only* connection sends only statements that read, because Redshift cannot be told to open a session read-only.
 
+### Snowflake
+Pick **Snowflake**. In the form: *Host* is the **account** (`myorg-account1`, or `xy12345.eu-west-1`; the whole `....snowflakecomputing.com` name works too) and may end in
+`?warehouse=COMPUTE_WH&role=ANALYST` to choose the warehouse and the role (the form has no boxes for them; without them the user's defaults are used),
+*Database* is the database (`ANALYTICS`) or `ANALYTICS.PUBLIC`, and *User* is the login name. TableGrip uses Snowflake's SQL API, which does **not** take a password. Sign in with either:
+- **A key pair (recommended).** Make a key with `openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out rsa_key.p8 -nocrypt` (or without `-nocrypt` to protect it with a passphrase),
+  make its public key (`openssl rsa -in rsa_key.p8 -pubout -out rsa_key.pub`), give that to your user (`ALTER USER ada SET RSA_PUBLIC_KEY='...';`), and choose the `.p8` file in the *Key* box.
+  If the key has a passphrase, put it in *Password*.
+- **A programmatic access token.** Make one for the user (Snowsight or `ALTER USER ... ADD PROGRAMMATIC ACCESS TOKEN`), leave *Key* empty and put the token in *Password*.
+
+> **Not yet run against a real Snowflake account.** The sign-in, the requests and the way answers are read were written from Snowflake's documentation and tested against a stand-in
+> that answers in the documented shape (the signing of the key-pair token is checked with the public key). Tell us what the real service does differently.
+
+- **What you see.** The schemas, tables and views of the database (from `INFORMATION_SCHEMA`), the columns with their Snowflake types, identity, defaults and comments, the primary key, unique keys and
+  foreign keys (Snowflake does not enforce them; they are shown as it keeps them), the table's `GET_DDL`, and the rows, typed (dates, timestamps with their zone, `VARIANT` as JSON text).
+- **Editing.** A commit is sent as one Snowflake Scripting block (the SQL API has no session): it begins a transaction, runs the statements, compares the number of rows each changed with what was expected,
+  and rolls back and says so when it differs or a statement fails. A value that contains `$$` cannot be saved this way.
+- **Not offered yet.** The table designer, structure editing and schema comparison (change a Snowflake table with SQL in a query tab), and importing rows over existing ones (the import only adds:
+  Snowflake cannot tell which rows exist, as it does not enforce keys). Users and rights are managed with SQL.
+- A *Read-only* connection sends only statements that read (`SELECT`, `SHOW`, `DESCRIBE`, `EXPLAIN`, `LIST`).
 ### Cloudflare D1
 Pick **Cloudflare D1**. In the form: *Host* is the **Account ID** (Cloudflare dashboard > Account home, 32 characters), *Database* is the name of the D1 database (or its id),
 and *Password* is an **API token** (My Profile > API Tokens > Create Token, with the permission **Account > D1 > Edit** to change data, or **Read** to look only).

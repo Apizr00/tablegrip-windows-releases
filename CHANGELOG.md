@@ -3,6 +3,18 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.12.0] - 2026-10-24
+
+### Added
+- **Snowflake** in the database picker, through Snowflake's SQL API (no driver package, which would have added tens of MB): the account in *Host* (optionally with `?warehouse=...&role=...`),
+  the database in *Database*, the login name in *User*, and the sign-in with a **key pair** (the private key file in *Key*, its passphrase in *Password*) or a **programmatic access token**
+  (in *Password*): the SQL API takes no password. Schemas, tables, views, columns with their types, keys, foreign keys, the table's DDL and the typed rows are shown; a commit is one
+  Snowflake Scripting block that rolls back when a row count is not what it should be.
+- Not offered yet for Snowflake: the table designer and structure editing, schema comparison and importing over existing rows (change structure with SQL in a query tab).
+- **Not yet run against a real Snowflake account**: it was tested against a stand-in that answers in the documented shape, with the key-pair token checked against the public key.
+
+### Fixed
+- `VARIANT` columns are recognised as JSON in the grid editor.
 ## [2.11.0] - 2026-10-24
 
 ### Added
