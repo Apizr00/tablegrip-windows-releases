@@ -3,6 +3,29 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.6.0] - 2026-10-24
+
+### Added
+- **Oracle** (phase J4). Pick Oracle in the new-connection picker: host, port 1521, user, password and the service name (`FREEPDB1`, `XEPDB1`...);
+  a full connect descriptor can go in the host box, `sys` signs in as SYSDBA, and TLS connects over TCPS. TableGrip uses Oracle's managed driver, so
+  no Oracle client has to be installed (about 6 MB more to download).
+  - **Browse.** A schema is a user (yours first); tables, views and materialized views, and the structure with Oracle's types as `CREATE TABLE` writes them,
+    defaults, identity and virtual columns, comments, the primary key, indexes (function-based ones with their expression), foreign keys, checks and the
+    `CREATE` statement.
+  - **Edit** like any table, in one transaction that checks the rows each statement changed. Dates and numbers are read and written the same way
+    whatever the server's language settings.
+  - **SQL editor.** Statements run without their `;`; PL/SQL blocks and `CREATE PROCEDURE / FUNCTION / PACKAGE / TRIGGER` run to a line with only
+    `/`, as in SQL*Plus; a script shares one connection.
+  - **Designer** in Oracle's DDL (`ADD (...)`, `MODIFY (...)`, identity columns, `ON DELETE CASCADE / SET NULL`); the review window warns that Oracle commits each
+    DDL statement by itself. Import adds rows one statement per row (skip and update use `WHERE NOT EXISTS` and `MERGE`). Statistics through `DBMS_STATS`.
+    Administration shows sessions, status and users.
+  - **Not yet run against a real Oracle database.** There is no Oracle build that runs on the development machine, so this was written from Oracle's
+    documentation and tested against a stand-in connection that answers from a script (68 tests of the provider and 25 of the schema tools). Please report anything that differs, with its ORA- message.
+
+### Changed
+- The third-party notices name Oracle's terms for Oracle's driver instead of calling every licence file Microsoft's.
+- `BINARY_DOUBLE` and `BINARY_FLOAT` columns are read as floating point, `RAW(n)` as binary, and a date may be typed with its time.
+
 ## [2.5.0] - 2026-10-24
 
 ### Added

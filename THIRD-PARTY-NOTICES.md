@@ -40,6 +40,7 @@ reproduced here as those licences require. TableGrip itself is licensed under th
 | MongoDB.Driver | 3.12.0 | Apache-2.0 | Copyright © 2010-present MongoDB Inc. | https://www.mongodb.com/docs/drivers/csharp/ |
 | MySqlConnector | 2.6.2 | MIT | Copyright 2016–2026 Bradley Grainger | https://mysqlconnector.net/ |
 | Npgsql | 10.0.3 | PostgreSQL | Copyright 2025 © The Npgsql Development Team | https://github.com/npgsql/npgsql |
+| Oracle.ManagedDataAccess.Core | 23.26.400 | Oracle Free Distribution, Hosting, and Use Terms and Conditions (LICENSE.txt in the package) | Copyright © 2026, Oracle and/or its affiliates | https://www.oracle.com/database/technologies/appdev/dotnet.html |
 | SharpCompress | 0.48.1 | MIT | Copyright (c) 2025 Adam Hathcock | https://github.com/adamhathcock/sharpcompress |
 | Snappier | 1.3.1 | BSD-3-Clause | Copyright 2011-2020, Google, Inc. and Snappier Authors | https://brantburnett.github.io/Snappier/ |
 | SQLitePCLRaw.bundle_e_sqlite3 | 2.1.12 | Apache-2.0 | Copyright 2014-2024 SourceGear, LLC |  |
@@ -47,6 +48,7 @@ reproduced here as those licences require. TableGrip itself is licensed under th
 | SQLitePCLRaw.lib.e_sqlite3 | 2.1.12 | Apache-2.0 | Copyright 2014-2024 SourceGear, LLC |  |
 | SQLitePCLRaw.provider.e_sqlite3 | 2.1.12 | Apache-2.0 | Copyright 2014-2024 SourceGear, LLC |  |
 | SSH.NET | 2026.0.0 | MIT | Copyright © Renci 2010-2026 |  |
+| System.DirectoryServices.Protocols | 8.0.2 | MIT | © Microsoft Corporation. All rights reserved. | https://dot.net/ |
 | System.IdentityModel.Tokens.Jwt | 8.16.0 | MIT | © Microsoft Corporation. All rights reserved. | https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet |
 | System.Threading.RateLimiting | 9.0.18 | MIT | © Microsoft Corporation. All rights reserved. | https://dot.net/ |
 | Velopack | 1.2.158 | MIT | Copyright © Velopack Ltd. All rights reserved. | https://github.com/velopack/velopack |
