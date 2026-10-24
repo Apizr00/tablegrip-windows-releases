@@ -3,19 +3,38 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.7.1] - 2026-10-24
+
+### Fixed
+- **The "Review changes" window no longer shows over every result that has no table behind it.** A query such as `SELECT 1`, a
+  Redis command or a MongoDB shell command left an empty review window open on top of the result (the window of editable results
+  was visible when there was no editor to give it a state). Since 1.11.0.
+- **"Edit structure" and "Analyze columns" are off for Redis and MongoDB**, which have no schema to design and no SQL to analyze
+  with (Edit structure opened a designer that could not do anything).
+- **Oracle:** a refused or unreachable connection (the driver reports it as `ORA-50201`) now says what to check instead of
+  showing the bare code.
+- **Amazon Redshift:** the user box suggests `awsuser`, the name Redshift gives its first user.
+
+### Changed
+- The changelog entries of 2.2.0 to 2.7.1 were tidied: the same line width throughout.
+
 ## [2.7.0] - 2026-10-24
 
 ### Added
-- **Amazon Redshift** (the last engine of phase J). Pick Amazon Redshift: cluster endpoint, port 5439, user, password, database and TLS; a `redshift://` URL can
-  be pasted. It uses the PostgreSQL driver with catalog queries of its own, because Redshift is PostgreSQL 8.0 underneath.
-  - **Browse.** Schemas, tables and views; types, defaults, `IDENTITY` columns, comments, the primary key and unique constraints (shown as *not enforced*),
-    foreign keys, the **DISTKEY** and **SORTKEY** in the place of indexes, the distribution style, rows, size and the `CREATE TABLE` statement.
-  - **Edit** as for PostgreSQL; since Redshift does not enforce a primary key, an edit that matches more than one row is refused instead of changing them all.
-  - **Designer** with `IDENTITY(1,1)`; no indexes or checks, a varchar-only `ALTER COLUMN TYPE` and no NOT NULL change, each said in the review window.
-    Analyze and Vacuum; import by row for skip and update (`MERGE INTO`, no `ON CONFLICT`); administration from `stv_recents` and `pg_user`. A read-only connection
-    sends only reads.
-  - **Not yet run against a real cluster.** The catalog queries were checked against a current PostgreSQL (valid SQL, keys read by subscript, fallbacks when
-    Redshift-only objects are absent); the Redshift-only parts follow AWS's documentation. Please report anything that differs.
+- **Amazon Redshift** (the last engine of phase J). Pick Amazon Redshift: cluster endpoint, port 5439, user, password, database
+  and TLS; a `redshift://` URL can be pasted. It uses the PostgreSQL driver with catalog queries of its own, because Redshift is
+  PostgreSQL 8.0 underneath.
+  - **Browse.** Schemas, tables and views; types, defaults, `IDENTITY` columns, comments, the primary key and unique constraints
+    (shown as *not enforced*), foreign keys, the **DISTKEY** and **SORTKEY** in the place of indexes, the distribution style,
+    rows, size and the `CREATE TABLE` statement.
+  - **Edit** as for PostgreSQL; since Redshift does not enforce a primary key, an edit that matches more than one row is refused
+    instead of changing them all.
+  - **Designer** with `IDENTITY(1,1)`; no indexes or checks, a varchar-only `ALTER COLUMN TYPE` and no NOT NULL change, each
+    said in the review window. Analyze and Vacuum; import by row for skip and update (`MERGE INTO`, no `ON CONFLICT`);
+    administration from `stv_recents` and `pg_user`. A read-only connection sends only reads.
+  - **Not yet run against a real cluster.** The catalog queries were checked against a current PostgreSQL (valid SQL, keys read
+    by subscript, fallbacks when Redshift-only objects are absent); the Redshift-only parts follow AWS's documentation. Please
+    report anything that differs.
 
 ### Changed
 - `CockroachDB`, `TimescaleDB` and Redshift share the PostgreSQL provider; nothing changes for them.
@@ -23,73 +42,81 @@ follow [Semantic Versioning](https://semver.org/).
 ## [2.6.0] - 2026-10-24
 
 ### Added
-- **Oracle** (phase J4). Pick Oracle in the new-connection picker: host, port 1521, user, password and the service name (`FREEPDB1`, `XEPDB1`...);
-  a full connect descriptor can go in the host box, `sys` signs in as SYSDBA, and TLS connects over TCPS. TableGrip uses Oracle's managed driver, so
-  no Oracle client has to be installed (about 6 MB more to download).
-  - **Browse.** A schema is a user (yours first); tables, views and materialized views, and the structure with Oracle's types as `CREATE TABLE` writes them,
-    defaults, identity and virtual columns, comments, the primary key, indexes (function-based ones with their expression), foreign keys, checks and the
-    `CREATE` statement.
-  - **Edit** like any table, in one transaction that checks the rows each statement changed. Dates and numbers are read and written the same way
-    whatever the server's language settings.
-  - **SQL editor.** Statements run without their `;`; PL/SQL blocks and `CREATE PROCEDURE / FUNCTION / PACKAGE / TRIGGER` run to a line with only
-    `/`, as in SQL*Plus; a script shares one connection.
-  - **Designer** in Oracle's DDL (`ADD (...)`, `MODIFY (...)`, identity columns, `ON DELETE CASCADE / SET NULL`); the review window warns that Oracle commits each
-    DDL statement by itself. Import adds rows one statement per row (skip and update use `WHERE NOT EXISTS` and `MERGE`). Statistics through `DBMS_STATS`.
-    Administration shows sessions, status and users.
-  - **Not yet run against a real Oracle database.** There is no Oracle build that runs on the development machine, so this was written from Oracle's
-    documentation and tested against a stand-in connection that answers from a script (68 tests of the provider and 25 of the schema tools). Please report anything that differs, with its ORA- message.
+- **Oracle** (phase J4). Pick Oracle in the new-connection picker: host, port 1521, user, password and the service name
+  (`FREEPDB1`, `XEPDB1`...); a full connect descriptor can go in the host box, `sys` signs in as SYSDBA, and TLS connects over
+  TCPS. TableGrip uses Oracle's managed driver, so no Oracle client has to be installed (about 6 MB more to download).
+  - **Browse.** A schema is a user (yours first); tables, views and materialized views, and the structure with Oracle's types as
+    `CREATE TABLE` writes them, defaults, identity and virtual columns, comments, the primary key, indexes (function-based ones
+    with their expression), foreign keys, checks and the `CREATE` statement.
+  - **Edit** like any table, in one transaction that checks the rows each statement changed. Dates and numbers are read and
+    written the same way whatever the server's language settings.
+  - **SQL editor.** Statements run without their `;`; PL/SQL blocks and `CREATE PROCEDURE / FUNCTION / PACKAGE / TRIGGER` run to
+    a line with only `/`, as in SQL*Plus; a script shares one connection.
+  - **Designer** in Oracle's DDL (`ADD (...)`, `MODIFY (...)`, identity columns, `ON DELETE CASCADE / SET NULL`); the review
+    window warns that Oracle commits each DDL statement by itself. Import adds rows one statement per row (skip and update use
+    `WHERE NOT EXISTS` and `MERGE`). Statistics through `DBMS_STATS`. Administration shows sessions, status and users.
+  - **Not yet run against a real Oracle database.** There is no Oracle build that runs on the development machine, so this was
+    written from Oracle's documentation and tested against a stand-in connection that answers from a script (68 tests of the
+    provider and 25 of the schema tools). Please report anything that differs, with its ORA- message.
 
 ### Changed
 - The third-party notices name Oracle's terms for Oracle's driver instead of calling every licence file Microsoft's.
-- `BINARY_DOUBLE` and `BINARY_FLOAT` columns are read as floating point, `RAW(n)` as binary, and a date may be typed with its time.
+- `BINARY_DOUBLE` and `BINARY_FLOAT` columns are read as floating point, `RAW(n)` as binary, and a date may be typed with its
+  time.
 
 ## [2.5.0] - 2026-10-24
 
 ### Added
-- **libSQL and Turso** (the rest of phase J2). Pick **libSQL / Turso** in the new-connection picker, give the address of the database
-  (`libsql://my-db-org.turso.io`, `https://...`, or `http://127.0.0.1:8080` for a server of your own) and put the auth token in the password
-  box. libSQL is SQLite served over HTTP, so everything that works on a SQLite file works on it: the sidebar, the structure view (columns, keys,
-  indexes, foreign keys, checks, the `CREATE` statements), the designer, editing, filters, import, export and the SQL editor.
-  - Edits are saved in one transaction held on the server (the statements, then COMMIT or ROLLBACK), so a row that changed since it was read, or a
-    statement that fails, undoes the whole commit. A script with its own BEGIN and COMMIT runs on one stream, so the transaction stays open
-    between its statements.
-  - A *Read-only* connection refuses everything but reads. Users, `CREATE DATABASE` and the tables the server keeps for itself do not show.
-  - **Not yet run against Turso itself.** It was tested against a stand-in of the server (the Hrana protocol over HTTP in front of a real
-    SQLite, 26 tests); `sqld` has no Windows build and a Turso account was not available. Please report anything that differs.
+- **libSQL and Turso** (the rest of phase J2). Pick **libSQL / Turso** in the new-connection picker, give the address of the
+  database (`libsql://my-db-org.turso.io`, `https://...`, or `http://127.0.0.1:8080` for a server of your own) and put the auth
+  token in the password box. libSQL is SQLite served over HTTP, so everything that works on a SQLite file works on it: the
+  sidebar, the structure view (columns, keys, indexes, foreign keys, checks, the `CREATE` statements), the designer, editing,
+  filters, import, export and the SQL editor.
+  - Edits are saved in one transaction held on the server (the statements, then COMMIT or ROLLBACK), so a row that changed since
+    it was read, or a statement that fails, undoes the whole commit. A script with its own BEGIN and COMMIT runs on one stream,
+    so the transaction stays open between its statements.
+  - A *Read-only* connection refuses everything but reads. Users, `CREATE DATABASE` and the tables the server keeps for itself
+    do not show.
+  - **Not yet run against Turso itself.** It was tested against a stand-in of the server (the Hrana protocol over HTTP in front
+    of a real SQLite, 26 tests); `sqld` has no Windows build and a Turso account was not available. Please report anything that
+    differs.
 
 ### Changed
-- The part of the SQLite provider that reads the structure of a database now lives in one place and is used by both SQLite and libSQL.
+- The part of the SQLite provider that reads the structure of a database now lives in one place and is used by both SQLite and
+  libSQL.
 
 ### Fixed
-- Pasting a full address (`mongodb://...`, `mongodb+srv://...`, `https://...`, `libsql://...`) into the host box of a MongoDB, ClickHouse or libSQL
-  connection no longer shows "not an engine TableGrip can connect to": those providers read the address themselves. (The MongoDB guide of 2.3.0
-  said this worked; the form refused it.)
+- Pasting a full address (`mongodb://...`, `mongodb+srv://...`, `https://...`, `libsql://...`) into the host box of a MongoDB,
+  ClickHouse or libSQL connection no longer shows "not an engine TableGrip can connect to": those providers read the address
+  themselves. (The MongoDB guide of 2.3.0 said this worked; the form refused it.)
 
 ## [2.4.0] - 2026-10-24
 
 ### Added
-- **ClickHouse** (phase J3). Pick ClickHouse in the new-connection picker: host, port 8123 (the HTTP interface; 8443 with TLS), user
-  (empty is `default`), password and database (empty is `default`). TableGrip talks to ClickHouse over HTTP with a small client of its
-  own, so the download does not grow.
-  - **Browse.** Tables and views of the database, the structure with the ClickHouse types as the server writes them
-    (`Nullable`, `LowCardinality`, `Array`...), defaults, comments, the primary and sorting key, data skipping indexes, the engine, rows,
-    size, partition key and the `CREATE TABLE` statement. Results are streamed in batches, numbers, decimals, dates, UUIDs and booleans
-    arrive as such, and a cancelled query is stopped on the server.
-  - **Edit, the way ClickHouse allows.** New rows are inserted; a change or a delete is sent as a mutation (`ALTER TABLE ... UPDATE` /
-    `DELETE`, waited for). Each one is counted first, so a row that is no longer what the grid showed, or a key that matches several rows
-    (a ClickHouse key is not unique), is found before anything is sent. There are no transactions: if a commit fails after its first
-    statement, the message says how many were already applied. `UPDATE` and `DELETE` typed in a query tab become the same mutations.
-  - **Designer.** `CREATE TABLE ... ENGINE = MergeTree ORDER BY (key)`, add, drop, rename and change columns, data skipping indexes,
-    rename table. No foreign keys, unique indexes or auto-numbered columns (the designer says so); the key of an existing table cannot
-    change.
-  - **Tools.** Optimize (`OPTIMIZE TABLE ... FINAL`) and check, import (rows are added), switch database, and administration: running
-    queries, server status, databases, replicas and users.
-  - **Not yet run against a real server.** ClickHouse has no Windows build, so this was written from the documentation of its HTTP
-    interface and tested against a stand-in server that answers the way ClickHouse does (90 tests). Please report anything that differs.
+- **ClickHouse** (phase J3). Pick ClickHouse in the new-connection picker: host, port 8123 (the HTTP interface; 8443 with TLS),
+  user (empty is `default`), password and database (empty is `default`). TableGrip talks to ClickHouse over HTTP with a small
+  client of its own, so the download does not grow.
+  - **Browse.** Tables and views of the database, the structure with the ClickHouse types as the server writes them (`Nullable`,
+    `LowCardinality`, `Array`...), defaults, comments, the primary and sorting key, data skipping indexes, the engine, rows,
+    size, partition key and the `CREATE TABLE` statement. Results are streamed in batches, numbers, decimals, dates, UUIDs and
+    booleans arrive as such, and a cancelled query is stopped on the server.
+  - **Edit, the way ClickHouse allows.** New rows are inserted; a change or a delete is sent as a mutation (`ALTER TABLE ...
+    UPDATE` / `DELETE`, waited for). Each one is counted first, so a row that is no longer what the grid showed, or a key that
+    matches several rows (a ClickHouse key is not unique), is found before anything is sent. There are no transactions: if a
+    commit fails after its first statement, the message says how many were already applied. `UPDATE` and `DELETE` typed in a
+    query tab become the same mutations.
+  - **Designer.** `CREATE TABLE ... ENGINE = MergeTree ORDER BY (key)`, add, drop, rename and change columns, data skipping
+    indexes, rename table. No foreign keys, unique indexes or auto-numbered columns (the designer says so); the key of an
+    existing table cannot change.
+  - **Tools.** Optimize (`OPTIMIZE TABLE ... FINAL`) and check, import (rows are added), switch database, and administration:
+    running queries, server status, databases, replicas and users.
+  - **Not yet run against a real server.** ClickHouse has no Windows build, so this was written from the documentation of its
+    HTTP interface and tested against a stand-in server that answers the way ClickHouse does (90 tests). Please report anything
+    that differs.
 
 ### Changed
-- `Nullable(...)`, `LowCardinality(...)`, `Map`, `Tuple` and similar types are read as the kind of value they hold (a `Nullable(Int32)` is a
-  whole number, a `Map(String, Int32)` is text) wherever TableGrip parses what you type.
+- `Nullable(...)`, `LowCardinality(...)`, `Map`, `Tuple` and similar types are read as the kind of value they hold (a
+  `Nullable(Int32)` is a whole number, a `Map(String, Int32)` is text) wherever TableGrip parses what you type.
 
 ## [2.3.0] - 2026-10-24
 
@@ -97,11 +124,11 @@ follow [Semantic Versioning](https://semver.org/).
 - **MongoDB** (phase J5, second half). Pick MongoDB in the new-connection picker: host and port (27017), optional user and
   password, TLS, and the database (empty is `test`). Instead of a host you can paste a full address
   (`mongodb://user:pass@host:27017/app?authSource=admin`, or `mongodb+srv://...` for Atlas), which is used as it is.
-  - **A collection is a table, a document is a row.** The columns are the fields found in the first 200 documents (`_id`
-    first); a field that turns up later on a page is added. Each column has the type its values have (`string`, `int`, `long`,
-    `double`, `decimal`, `bool`, `datetime`, `objectid`, `uuid`, `object`, `array`, `binary`, or `mixed`). Objects and arrays
-    show as JSON, an ObjectId as its 24 hex digits, a date as a date. The Structure tab shows the indexes, how many documents
-    each field is in, the options of the collection and the shell commands that would create it again.
+  - **A collection is a table, a document is a row.** The columns are the fields found in the first 200 documents (`_id` first);
+    a field that turns up later on a page is added. Each column has the type its values have (`string`, `int`, `long`, `double`,
+    `decimal`, `bool`, `datetime`, `objectid`, `uuid`, `object`, `array`, `binary`, or `mixed`). Objects and arrays show as
+    JSON, an ObjectId as its 24 hex digits, a date as a date. The Structure tab shows the indexes, how many documents each field
+    is in, the options of the collection and the shell commands that would create it again.
   - **The server does the searching.** Paging, sorting, the filter bar (equals, contains, `IN`, `BETWEEN`, null, ...), quick
     search (which finds numbers, dates and ids too) and the count are turned into a MongoDB query, so a big collection is not
     read into the program. A condition the server cannot be asked (a search through objects, a function) is evaluated on the
@@ -110,20 +137,20 @@ follow [Semantic Versioning](https://semver.org/).
     field), set it to null, edit an object or array as JSON, add a row with **+ Row** (an empty `_id` gets a new ObjectId) and
     delete rows. Changes are staged, the SQL is shown first, and the commit is one bulk write. Every update names the fields it
     changes with the value they had, so a document changed by somebody else is reported and not overwritten; on a replica set
-    the commit is a transaction and is rolled back as a whole, on a single server the changes made before a conflict stay
-    and the message says so. **Truncate** deletes the documents and keeps the indexes.
+    the commit is a transaction and is rolled back as a whole, on a single server the changes made before a conflict stay and
+    the message says so. **Truncate** deletes the documents and keeps the indexes.
   - **A console for shell commands.** A query tab takes `db.users.find({age: {$gt: 30}}).sort({age: -1}).limit(5)`, `findOne`,
     `countDocuments`, `distinct`, `aggregate`, `insertOne`/`insertMany`, `updateOne`/`updateMany`, `replaceOne`, `deleteOne`/
     `deleteMany`, `createIndex`, `dropIndex`, `getIndexes`, `drop`, `db.runCommand({...})`, `show collections` and `show dbs`,
-    with the shell's looser JSON (`{name: 'Ada'}`, `ObjectId("...")`, `ISODate("...")`, `/regex/i`) and `//` comments. SQL
-    can be mixed in. Safe mode sorts commands by what they do: reads pass, `insertOne` or `$out` asks, `deleteMany`, `drop` and
+    with the shell's looser JSON (`{name: 'Ada'}`, `ObjectId("...")`, `ISODate("...")`, `/regex/i`) and `//` comments. SQL can
+    be mixed in. Safe mode sorts commands by what they do: reads pass, `insertOne` or `$out` asks, `deleteMany`, `drop` and
     `dropDatabase` are destructive, and a read-only connection refuses all of them.
-  - **Administration** shows the operations running now (with kill), the server status, the databases and, on a replica set,
-    its members.
-  - A user made in another database than `admin` is found by trying that database after `admin`. A refused sign-in says so
-    and how to name the database (`?authSource=`).
-  - The driver and its compression libraries add about 6 MB to the download (102 to 109 MB for the full package). Tables, schemas, ER diagrams, migrations, backups and the other SQL tools are
-    hidden or say that MongoDB has none.
+  - **Administration** shows the operations running now (with kill), the server status, the databases and, on a replica set, its
+    members.
+  - A user made in another database than `admin` is found by trying that database after `admin`. A refused sign-in says so and
+    how to name the database (`?authSource=`).
+  - The driver and its compression libraries add about 6 MB to the download (102 to 109 MB for the full package). Tables,
+    schemas, ER diagrams, migrations, backups and the other SQL tools are hidden or say that MongoDB has none.
 
 ### Changed
 - `long` (a 64-bit integer) is a whole number to the grid, and an `object` is JSON: they are checked when typed, and the
@@ -144,11 +171,11 @@ follow [Semantic Versioning](https://semver.org/).
     the SQL is shown first, and the commit is one `WATCH` / `MULTI` / `EXEC` transaction: if another client changed a key in the
     meantime nothing is applied and you are told which key. A key with binary content is listed but never written back.
     **Truncate** is `FLUSHDB`.
-  - **A console for commands.** A query tab on a Redis connection takes Redis commands, one per line (`GET user:1`,
-    `HGETALL session:abc`, `CONFIG GET maxmemory`, quoting as in `redis-cli`; lines starting with `#` are comments), and
-    the SQL the grid writes. Replies are shown as rows (pairs for hashes, a line each for `INFO`). Safe mode sorts commands by
-    what they do: a read passes, `SET` or `EXPIRE` asks (or is refused in read-only), `DEL`, `UNLINK`, `FLUSHDB` and
-    `FLUSHALL` are destructive. `SELECT n`, subscriptions and `MULTI` are not available in a tab, with a message that says why.
+  - **A console for commands.** A query tab on a Redis connection takes Redis commands, one per line (`GET user:1`, `HGETALL
+    session:abc`, `CONFIG GET maxmemory`, quoting as in `redis-cli`; lines starting with `#` are comments), and the SQL the grid
+    writes. Replies are shown as rows (pairs for hashes, a line each for `INFO`). Safe mode sorts commands by what they do: a
+    read passes, `SET` or `EXPIRE` asks (or is refused in read-only), `DEL`, `UNLINK`, `FLUSHDB` and `FLUSHALL` are destructive.
+    `SELECT n`, subscriptions and `MULTI` are not available in a tab, with a message that says why.
   - **Administration** shows the sessions (`CLIENT LIST`, with kill), the server status and the databases (`db0` to `dbN`) from
     `INFO`, `CONFIG` and `CLIENT`.
   - It is a small client of its own (RESP2 over a socket, TLS, AUTH with user and password), so the download does not grow.
