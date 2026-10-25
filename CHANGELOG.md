@@ -3,6 +3,17 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.21.0] - 2026-10-25
+
+### Added
+- **The table designer, Edit structure, New table and schema compare for Snowflake, Vertica, BigQuery and Cassandra**, which had none. Each writes the engine's own DDL: Snowflake (`AUTOINCREMENT`, a declared key, `SET DATA TYPE`), Vertica (`IDENTITY`, checks, `SET NOT NULL`),
+  BigQuery (`PRIMARY KEY ... NOT ENFORCED`, `ADD COLUMN` only for columns that allow NULL, `DROP NOT NULL`) and Cassandra (partition key then clustering columns, `ADD`/`DROP` columns, secondary indexes). What an engine cannot do
+  (a Cassandra column type, a BigQuery `SET NOT NULL`, indexes in a warehouse) is refused or left out, and the review says so.
+- Snowflake and BigQuery apply a structure script one statement at a time (each DDL statement commits on its own there); the review warns that an earlier statement stays if a later one fails.
+- Not run against real servers: the statements were written from each engine's documentation and tested as text. Elasticsearch and DynamoDB have no columns to design and keep using their own API.
+
+### Changed
+- Column types in the designer may contain `<` and `>` (`list<text>`, `ARRAY<STRING>`, `STRUCT<a INT64>`).
 ## [2.20.0] - 2026-10-24
 
 ### Added

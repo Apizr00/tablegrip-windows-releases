@@ -259,7 +259,8 @@ Pick **Cassandra** (Scylla and Astra answer the same protocol): *Host* is a node
 - **Editing.** `INSERT` and `UPDATE` are upserts in Cassandra (a row is written over the one with the same key). TableGrip reads the rows an `UPDATE` or `DELETE` addresses first, so it can tell you when the row is not there (Cassandra would create it),
   then sends the changes as a **logged batch** (atomic, with no isolation), cut into batches of 100 statements: when a commit is longer than that and a later batch fails, the earlier ones stay and the message says how many. A column of the key cannot be changed: delete the row and insert it again.
 - **Import** writes rows (over any with the same key); skipping or updating separately makes no sense there and is not offered.
-- **Not offered yet.** The table designer, schema comparison, users and roles (CQL does that in a query tab).
+- **The designer** (*New table*, *Edit structure*, schema compare): the first key column is the **partition key** and the other key columns are clustering columns, in the order listed. Cassandra can add and drop columns, rename a key column and create or drop single-column secondary indexes; it cannot change a column's type, the primary key or the table name, and the designer leaves those changes out and says so. No defaults, counters, checks or foreign keys.
+- **Not offered yet.** Users and roles (CQL does that in a query tab).
 - A *Read-only* connection sends only statements that read.
 ### BigQuery
 Pick **BigQuery**. *Host* is the **project id** (`my-project-123456`): the project that runs and is billed for the queries. *Database* is empty to show every dataset of the project, a dataset (`shop`) to show just that one, or
@@ -278,7 +279,8 @@ After the project in Host you can add `?max_gb=10` to make BigQuery refuse any q
   that were declared (BigQuery does not enforce them), the partitioning and clustering, and the `CREATE` statement. A table written `` `project`.`dataset`.`table` `` in your queries is the same table.
 - **Editing.** Works for tables with a declared primary key: a commit is one script that begins a transaction, runs the statements, compares each row count with what was expected and rolls back when it differs or a statement fails.
   BigQuery allows only a limited number of data changes per table per day.
-- **Not offered yet.** The table designer, schema comparison, importing over existing rows (BigQuery cannot tell which exist), and users and rights (IAM does that).
+- **The designer** writes `CREATE TABLE` with `PRIMARY KEY (...) NOT ENFORCED` (keys are declarations), `ADD COLUMN` (only columns that allow NULL), `DROP COLUMN`, `RENAME COLUMN`, `ALTER COLUMN ... SET DATA TYPE` (widening only), `DROP NOT NULL` and `SET/DROP DEFAULT`. No indexes, checks or auto-numbered columns. BigQuery refuses DDL inside a transaction, so each statement runs on its own and the review says so.
+- **Not offered yet.** Importing over existing rows (BigQuery cannot tell which exist), and users and rights (IAM does that).
 - A *Read-only* connection sends only statements that read.
 ### Vertica
 Pick **Vertica**: the host of any node, port **5433**, the user (`dbadmin` is the usual one), the password and the **database** name. SSL mode *Required* or stricter turns TLS on (the driver does not
@@ -291,7 +293,8 @@ check the certificate). TableGrip uses Vertica's own ADO.NET driver, so nothing 
 - **What you see.** Schemas (without the system ones), tables and views; the structure shows the types as Vertica writes them, defaults, identity columns, comments, the primary key, unique constraints
   and foreign keys (Vertica does not enforce them unless they are enabled), the **projections** of the table (how Vertica stores it) and its definition from `EXPORT_OBJECTS`.
 - **Editing.** Works as for any SQL table: a commit is one transaction, and a row changed by someone else is refused. Values go into the statements as literals.
-- **Not offered yet.** The table designer, structure editing and schema comparison (change a table with SQL in a query tab), and importing over existing rows (the import only adds, as Vertica cannot tell which exist).
+- **The designer** (*New table*, *Edit structure*, schema compare) writes `CREATE TABLE` with `IDENTITY(1,1)`, checks and a declared key, `ADD/DROP/RENAME COLUMN`, `ALTER COLUMN ... SET DATA TYPE / SET NOT NULL / DROP NOT NULL / SET DEFAULT`. No indexes (projections are made with SQL).
+- **Not offered yet.** Importing over existing rows (the import only adds, as Vertica cannot tell which exist).
   Ending a session is done with `CLOSE_SESSION` in a query tab.
 - A *Read-only* connection sends only statements that read.
 ### Elasticsearch
@@ -331,7 +334,8 @@ Pick **Snowflake**. In the form: *Host* is the **account** (`myorg-account1`, or
   foreign keys (Snowflake does not enforce them; they are shown as it keeps them), the table's `GET_DDL`, and the rows, typed (dates, timestamps with their zone, `VARIANT` as JSON text).
 - **Editing.** A commit is sent as one Snowflake Scripting block (the SQL API has no session): it begins a transaction, runs the statements, compares the number of rows each changed with what was expected,
   and rolls back and says so when it differs or a statement fails. A value that contains `$$` cannot be saved this way.
-- **Not offered yet.** The table designer, structure editing and schema comparison (change a Snowflake table with SQL in a query tab), and importing rows over existing ones (the import only adds:
+- **The designer** (*New table*, *Edit structure*, schema compare) writes `CREATE TABLE` with `AUTOINCREMENT` and a declared key, `ADD/DROP/RENAME COLUMN`, `ALTER COLUMN ... SET DATA TYPE / SET NOT NULL / DROP NOT NULL / SET DEFAULT`. Snowflake only lets a text column grow or a number gain precision, and it commits every structure statement on its own, so each runs separately and the review says so. No indexes or checks.
+- **Not offered yet.** Importing rows over existing ones (the import only adds:
   Snowflake cannot tell which rows exist, as it does not enforce keys). Users and rights are managed with SQL.
 - A *Read-only* connection sends only statements that read (`SELECT`, `SHOW`, `DESCRIBE`, `EXPLAIN`, `LIST`).
 ### Cloudflare D1
