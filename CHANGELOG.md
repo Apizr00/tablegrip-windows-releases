@@ -3,6 +3,22 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.25.0] - 2026-10-25
+
+Measured first (start-up 0.9 s; a page of a million-row table 13 to 42 ms; 100,000 query rows in 0.7 s; a 5,000-table database listed in 1.5 s; memory level over repeated large queries; a runaway query stopped in 60 ms), then fixed what the measuring and a trace of screen errors found.
+
+### Fixed
+- **A dead edit toolbar** ("+ Row, Undo, Redo...") showed on every new query tab and under every failed query. It now appears only when the result can be edited.
+- **Run, Run all, Explain, Format and Cancel in the menus looked usable on a table tab and did nothing**; they are disabled there.
+- **A saved file that got damaged could wipe everything it held**: a connections file cut short would load as empty and the next save would replace it with one connection. Each file now keeps a `.bak` of the version before the last save; a damaged file is set aside as `.corrupt-<date>` (never written over) and the backup is used.
+- **Repeated unexpected errors** no longer pile up dialogs: every error is logged, at most three dialogs are shown a minute, and never one over another.
+- The cells of a query result no longer each look up a foreign-key list that a query does not have.
+
+### Changed
+- **CSV export is about 25% faster** with less memory churn (a record is built and written at once).
+
+### Added
+- `TABLEGRIP_BINDING_LOG`: names a file that receives every screen-binding error, to find silent bugs (see the architecture notes).
 ## [2.24.0] - 2026-10-25
 
 ### Added

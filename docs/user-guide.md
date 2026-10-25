@@ -995,3 +995,4 @@ A thin line in the environment's colour along the top of the workspace shows whi
 `history.json`, `favorites.json`, `known_hosts.json`, `window.json`, the `themes` folder (your theme files) and
 `secrets.json` (encrypted). Delete the folder to start from scratch. Set the `TABLEGRIP_DATA_DIR`
 environment variable to use another folder (useful for a second, separate profile).
+Each file is written to a temporary file and moved into place, and the version before the last save is kept next to it as `name.json.bak`. If a file is ever found damaged (cut short, edited into invalid JSON) TableGrip does not write over it: it is renamed `name.json.corrupt-<date>-<time>` and the `.bak` copy is used, so at worst the last change is lost, not everything.
