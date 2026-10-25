@@ -614,7 +614,7 @@ Some engines bill by what a query reads, so TableGrip asks the engine first, wit
 | Run the statement at the caret, or the selection | Ctrl+Enter or F5 |
 | Run every statement | Ctrl+Shift+Enter |
 | Stop | Esc |
-| Suggest names | Ctrl+Space (also automatic after two letters or a dot) |
+| Suggest names | Ctrl+Space (also automatic after two letters or a dot); after the usual SQL words it offers the ones of the engine you are connected to: `begins_with` for DynamoDB, `ALLOW FILTERING` for Cassandra, `UNNEST` and `SAFE_CAST` for BigQuery, `QUALIFY` for Snowflake, `PREWHERE` for ClickHouse, the commands of Redis, the operators of MongoDB, and so on |
 | Format the SQL | Ctrl+Shift+F |
 | Find and replace | Ctrl+H |
 | Split the editor / zoom | Ctrl+ / Ctrl+wheel, Ctrl+0 resets |
@@ -680,7 +680,8 @@ The tabs are written down every couple of seconds and when you close the connect
 to the other app files (it holds your query text, never passwords). Turn it off in **Preferences > Reopen the tabs of the
 last session**.
 
-**History.** Every run is added to **History** in the sidebar; type in the search box to find one. Right-click >
+**History.** Every run is added to **History** in the sidebar; type in the search box to find one. Several words must all be in the statement (or in its error), in any order; `is:failed`, `is:ok`, `is:pinned` and `is:repeated` narrow it by how it went, and `slower:500ms` or `slower:2s` keeps the ones that took longer.
+"Quotes" search a phrase. Right-click >
 **Pin to top** keeps a query at the top of the list, and pinned queries survive *Clear history*. **Save query** keeps
 one under **Queries**.
 
@@ -810,6 +811,8 @@ Both are in the workspace menu (the button beside the sidebar) and in the comman
   column to the sort or reverses / removes it. The headers show the order.
 - **Hide columns.** Right-click a header: *Hide "name"*, *Show all columns*, or *Columns* to tick which are shown. The
   choice lasts as long as the tab is open.
+- **Freeze columns.** Right-click a header: *Freeze columns up to "name"* keeps that column and the ones to its left in view while the others scroll sideways (a key and a name column, say). *Unfreeze columns* (the header menu, or right-click in the grid) undoes it.
+  The setting is remembered for the table, also after you close TableGrip.
 - **Paste rows and columns.** **Ctrl+Alt+V** pastes tab-separated rows (from Excel or another grid) starting at the active
   cell; rows past the last one are added as new rows. Plain **Ctrl+V** still pastes the clipboard as one value.
 - **Binary values.** Double-click a binary cell, or press Ctrl+E, to see its type, a picture (PNG, JPEG, GIF, BMP, WebP), its

@@ -3,6 +3,15 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.24.0] - 2026-10-25
+
+### Added
+- **Frozen columns**: right-click a column header > *Freeze columns up to "name"* keeps that column and the ones before it in view while the rest scroll sideways. *Unfreeze columns* undoes it; the setting is remembered per table, also after a restart.
+- **The editor suggests the words of the connected engine** after the usual SQL ones: PartiQL (`begins_with`, `contains`), CQL (`ALLOW FILTERING`, `TOKEN`), BigQuery (`UNNEST`, `SAFE_CAST`, `QUALIFY`), Snowflake (`QUALIFY`, `FLATTEN`, `IFF`), ClickHouse (`PREWHERE`, `FINAL`, `argMax`), Vertica, Oracle, SQL Server, MySQL, PostgreSQL, SQLite, DuckDB, Redis commands and MongoDB operators.
+- **A better history search**: several words in any order (also found in a failed statement's error), `is:failed`, `is:ok`, `is:pinned`, `is:repeated`, and `slower:500ms` / `slower:2s`.
+
+### Fixed
+- The test suite no longer fails now and then: the stand-in servers of the tests retried a taken port with a listener that could not be reused, and one test assumed progress reports arrive in order.
 ## [2.23.0] - 2026-10-25
 
 ### Added
