@@ -3,6 +3,13 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.22.0] - 2026-10-25
+
+### Added
+- **BigQuery shows the cost before a query runs**: a dry run (free) gives the bytes it would process and the price at the on-demand rate, and a query of 1 GB or more asks *Run it anyway?*. A query over the connection's `max_gb` says Google will refuse it.
+- **DynamoDB says when a condition means reading the table** (AWS charges read capacity for every item read), with how many items, and asks first from 10,000 items.
+- **Cassandra** notes when a condition is evaluated here on up to 50,000 rows instead of by the key.
+- The check also runs when a table is **filtered or sorted**; declining shows *Try again*. **Preferences > Ask before a query that reads a lot** turns it off.
 ## [2.21.0] - 2026-10-25
 
 ### Added

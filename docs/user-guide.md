@@ -593,6 +593,14 @@ asked first, and if you keep them both stay open. The saved connection is not ch
 - **A slow query** shows *Running... 12.4 s* in the result area, and a **Stop** button, until the first rows arrive.
 - **Nothing to show** looks the same everywhere: an icon, what is missing, and the next step as a button where there is one. An empty table says so; a filter that matches nothing offers **Clear filter**; a home page with no connections
   offers **Create connection...**, and a search that matches none offers **Clear search**.
+### Before a query that reads a lot
+Some engines bill by what a query reads, so TableGrip asks the engine first, without running anything:
+- **BigQuery**: a dry run says how many bytes the query will process and about what that costs ($6.25 per TiB on-demand; yours may differ). A query of **1 GB or more** asks *Run it anyway?*; a smaller one shows the figure as a note above the result.
+  If it is over the `max_gb` limit of the connection, the message says Google will refuse it. Pages and counts of a table are free and are not estimated.
+- **DynamoDB**: a condition that is not on the key means reading the table, and AWS charges read capacity for every item read. The message says how many items (of how many) will be read; **10,000 or more** asks first.
+- **Cassandra**: a condition the key cannot answer is evaluated here on up to 50,000 rows; a note says so (nothing is charged, so it never asks).
+- This applies to the SQL editor and to a table that is **filtered or sorted**; a plain page of a table is never held back. If you decline in a table, *Try again* runs it.
+- **Preferences > Ask before a query that reads a lot** turns this off. The estimate is a courtesy: when an engine cannot give one, the query simply runs.
 ## SQL editor
 | Action | Keys |
 |---|---|
