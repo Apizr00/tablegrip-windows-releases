@@ -3,6 +3,18 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.26.0] - 2026-10-25
+
+### Changed
+- **A SQLite file with thousands of tables is read much faster** where TableGrip describes many tables in a row (a diagram, a comparison, a completion): the catalog queries keep one connection for three seconds instead of opening a new one, which has to read the whole schema again, for each. Describing 300 tables of a 5,000-table file went from 6.8 s to 34 ms. The file is released after the three seconds and when the connection closes.
+
+### Fixed
+- **Edit > Undo and Redo did nothing with a query tab selected** (the menu items looked usable). They now undo and redo the staged edits of the result being edited.
+- **A backup's row count could reach the progress bar late or out of order** when it ran without a window (the command line, the tests): each count was posted to the thread pool. It is now passed on at once, in order.
+
+### Developer
+- Command-line builds no longer leave idle MSBuild processes behind (`Directory.Build.rsp`), which had grown to dozens and gigabytes during a long session; the release script also shuts the build servers down.
+- The screens of PostgreSQL, Redis and MongoDB were driven with the binding trace on and came out clean.
 ## [2.25.0] - 2026-10-25
 
 Measured first (start-up 0.9 s; a page of a million-row table 13 to 42 ms; 100,000 query rows in 0.7 s; a 5,000-table database listed in 1.5 s; memory level over repeated large queries; a runaway query stopped in 60 ms), then fixed what the measuring and a trace of screen errors found.
