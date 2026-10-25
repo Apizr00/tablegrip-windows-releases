@@ -3,6 +3,14 @@
 All notable changes to TableGrip. The format follows [Keep a Changelog](https://keepachangelog.com/), and versions
 follow [Semantic Versioning](https://semver.org/).
 
+## [2.23.0] - 2026-10-25
+
+### Added
+- **The connection form follows the engine**: its boxes are named as the engine names them (Region, Access key id and Secret key for DynamoDB; Account for Snowflake; Project id and Dataset for BigQuery; Contact points and Keyspace for Cassandra...), the boxes an engine does not use are hidden (no port for a web service, no database for DynamoDB and Elasticsearch), and one line under the host says what goes where.
+
+### Fixed
+- **Test and Diagnose looked up the host box as if it were a machine name.** For DynamoDB (a region), Snowflake (an account), BigQuery (a project), D1 and a list of Cassandra nodes the lookup failed even when the connection was right. They now look up the address that is really used.
+- They also insisted on a database name for every engine; now only the engines that need one do, and the messages use the engine's words ("The keyspace is empty").
 ## [2.22.0] - 2026-10-25
 
 ### Added

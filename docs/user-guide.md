@@ -30,6 +30,13 @@
    it most likely means and what to try, and the steps after it are marked as skipped. *Copy report* puts the result on the
    clipboard for a bug report. Recently opened tables come first in the command palette (Ctrl+K, Ctrl+P).
 
+### The form follows the engine
+The same boxes mean different things to different engines, so the form names them as the engine does, hides the ones it does not use, and under the host box says in one line what goes where:
+**DynamoDB** has *Region*, *Access key id* and *Secret key* (no port, no database); **Snowflake** has *Account*; **BigQuery** has *Project id*, *Dataset* and an *Access token* (no user, no port); **Cassandra** has *Contact points* and *Keyspace*;
+**D1** has *Account id* and *API token*; **libSQL** has a *Database URL* and an *Auth token*; **Redis** has a *Database number*; **Oracle** has a *Service name*. A database name is only asked for where the engine needs one.
+
+**Test** and **Diagnose** look up and knock on the address that is really used (for DynamoDB `dynamodb.eu-west-1.amazonaws.com`, for Snowflake `account.snowflakecomputing.com`, for Cassandra the first node), not on the text of the host box,
+and say what is missing in the engine's own words ("The keyspace is empty", "The access key id or the secret access key is empty").
 ### DuckDB
 DuckDB is an embedded analytical database kept in one file (`.duckdb`, `.ddb`, or any name: TableGrip reads the file's header).
 It is chosen in the new-connection picker, or a file is opened with **File > Open database file**, dropped on the window or
